@@ -190,7 +190,12 @@ class ConversationLogObserver(BaseObserver):
         # Deduplicate: each frame is observed once per pipeline segment boundary.
         # Track seen frame object ids to process each frame exactly once.
         self._seen_frame_ids: set[int] = set()
-        self._wall_clock_start_ns: int = 0  # set in on_pipeline_started for periodic ts
+        self._wall_clock_start_ns: int = 0  # set in on_pipeline_started (for wall_clock_unix_ns anchor only)
+        # Pipeline clock reference: derived from the first frame seen so that
+        # periodic timestamps share the same origin as data.timestamp values.
+        # pipeline_ts(t) = t - _mono_pipeline_origin, matching data.timestamp.
+        self._mono_pipeline_origin: int = 0   # time.monotonic_ns() - data.timestamp at first frame
+        self._mono_pipeline_ready: bool = False
         logger.info(f"ConversationLogObserver: logging to {self._filepath}")
 
     # ------------------------------------------------------------------
@@ -200,7 +205,7 @@ class ConversationLogObserver(BaseObserver):
     async def on_pipeline_started(self):
         """Log session anchor: ties pipeline ts_ns offsets to wall time."""
         self._wall_clock_start_ns = time.time_ns()
-        self._log("pipeline_started", 0, wall_clock_unix_ns=self._wall_clock_start_ns, session_id=self._session_id)
+        self._log("pipeline_started", 0, wall_clock_unix_ns=self._wall_clock_start_ns, session_id=self._session_id)  # ts_ns=0 is a placeholder; real origin derived from first frame
         if self._turn_analyzer is not None:  # PeriodicSmartTurnAnalyzer
             self._polling_task = asyncio.create_task(self._poll_periodic_metrics())
 
@@ -213,10 +218,13 @@ class ConversationLogObserver(BaseObserver):
                     continue
                 if self._turn_analyzer is None:
                     continue
+                if not self._mono_pipeline_ready:
+                    continue
                 for m in self._turn_analyzer.drain_metrics():
+                    ts = time.monotonic_ns() - self._mono_pipeline_origin
                     self._log(
                         "turn_probability",
-                        time.time_ns() - self._wall_clock_start_ns,
+                        ts,
                         probability=m.probability,
                         is_complete=m.is_complete,
                         e2e_ms=m.e2e_processing_time_ms,
@@ -235,6 +243,12 @@ class ConversationLogObserver(BaseObserver):
         # frames we have already processed to avoid duplicate events/accumulation.
         # Use frame.id (a stable monotonic integer) rather than Python's id()
         # (memory address) which gets reused after GC and causes false skips.
+        # Establish the pipeline-clock origin from the first frame so that
+        # time.monotonic_ns() - _mono_pipeline_origin == data.timestamp.
+        if not self._mono_pipeline_ready:
+            self._mono_pipeline_origin = time.monotonic_ns() - data.timestamp
+            self._mono_pipeline_ready = True
+
         frame_id = data.frame.id
         if frame_id in self._seen_frame_ids:
             return
