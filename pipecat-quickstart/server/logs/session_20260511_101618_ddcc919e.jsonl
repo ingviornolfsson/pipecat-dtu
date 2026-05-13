@@ -1,0 +1,151 @@
+{"ts_ns": 0, "event": "pipeline_started", "wall_clock_unix_ns": 1778487380927010500, "session_id": "ddcc919e"}
+{"ts_ns": 2360000000, "event": "llm_started"}
+{"ts_ns": 6391000000, "event": "llm_token", "text": "I'm"}
+{"ts_ns": 6391000000, "event": "llm_token", "text": " your"}
+{"ts_ns": 6688000000, "event": "llm_token", "text": " virtual"}
+{"ts_ns": 6688000000, "event": "llm_token", "text": " assistant"}
+{"ts_ns": 6688000000, "event": "llm_token", "text": ","}
+{"ts_ns": 6688000000, "event": "llm_token", "text": " here"}
+{"ts_ns": 6688000000, "event": "llm_token", "text": " to"}
+{"ts_ns": 6688000000, "event": "llm_token", "text": " help"}
+{"ts_ns": 6688000000, "event": "llm_token", "text": " you"}
+{"ts_ns": 6688000000, "event": "llm_token", "text": " find"}
+{"ts_ns": 6688000000, "event": "llm_token", "text": " information"}
+{"ts_ns": 6688000000, "event": "llm_token", "text": ","}
+{"ts_ns": 6704000000, "event": "llm_token", "text": " answer"}
+{"ts_ns": 6704000000, "event": "llm_token", "text": " questions"}
+{"ts_ns": 6704000000, "event": "llm_token", "text": ","}
+{"ts_ns": 6704000000, "event": "llm_token", "text": " and"}
+{"ts_ns": 6704000000, "event": "llm_token", "text": " make"}
+{"ts_ns": 6704000000, "event": "llm_token", "text": " your"}
+{"ts_ns": 6704000000, "event": "llm_token", "text": " day"}
+{"ts_ns": 6704000000, "event": "llm_token", "text": " a"}
+{"ts_ns": 6704000000, "event": "llm_token", "text": " little"}
+{"ts_ns": 6704000000, "event": "llm_token", "text": " easier"}
+{"ts_ns": 6704000000, "event": "llm_token", "text": "."}
+{"ts_ns": 6704000000, "event": "llm_token", "text": " What"}
+{"ts_ns": 6704000000, "event": "llm_token", "text": " can"}
+{"ts_ns": 6704000000, "event": "llm_token", "text": " I"}
+{"ts_ns": 6704000000, "event": "llm_token", "text": " do"}
+{"ts_ns": 6704000000, "event": "llm_token", "text": " for"}
+{"ts_ns": 6704000000, "event": "llm_token", "text": " you"}
+{"ts_ns": 6704000000, "event": "llm_token", "text": " today"}
+{"ts_ns": 6704000000, "event": "llm_token", "text": "?"}
+{"ts_ns": 6735000000, "event": "llm_stopped"}
+{"ts_ns": 6750000000, "event": "tts_started", "context_id": "92b261f1-bc61-42fe-a499-bdf5e9ac3dcd"}
+{"ts_ns": 7079000000, "event": "tts_first_audio", "context_id": "92b261f1-bc61-42fe-a499-bdf5e9ac3dcd"}
+{"ts_ns": 7079000000, "event": "bot_speaking_started"}
+{"ts_ns": 8407000000, "event": "tts_stopped", "context_id": "92b261f1-bc61-42fe-a499-bdf5e9ac3dcd"}
+{"ts_ns": 8407000000, "event": "llm_stopped"}
+{"ts_ns": 13360000000, "event": "bot_speaking_stopped"}
+{"ts_ns": 17438000000, "event": "vad_started"}
+{"ts_ns": 17438000000, "event": "interruption"}
+{"ts_ns": 17672000000, "event": "stt_interim", "text": "I'm with"}
+{"ts_ns": 17719000000, "event": "turn_probability", "probability": 0.07174640893936157, "is_complete": false, "e2e_ms": 225.05990000036036, "source": "periodic"}
+{"ts_ns": 17954000000, "event": "turn_probability", "probability": 0.030293136835098267, "is_complete": false, "e2e_ms": 239.28850000038437, "source": "periodic"}
+{"ts_ns": 18188000000, "event": "turn_probability", "probability": 0.012468844652175903, "is_complete": false, "e2e_ms": 217.5505999998677, "source": "periodic"}
+{"ts_ns": 18375000000, "event": "turn_probability", "probability": 0.02144560217857361, "is_complete": false, "e2e_ms": 212.17429999978776, "source": "periodic"}
+{"ts_ns": 18610000000, "event": "turn_probability", "probability": 0.7580885291099548, "is_complete": true, "e2e_ms": 213.15379999987272, "source": "periodic"}
+{"ts_ns": 18672000000, "event": "stt_interim", "text": "Hi. I'm wondering what I should call"}
+{"ts_ns": 18813000000, "event": "turn_probability", "probability": 0.4803165793418884, "is_complete": false, "e2e_ms": 213.37880000010045, "source": "periodic"}
+{"ts_ns": 18875000000, "event": "vad_stopped"}
+{"ts_ns": 19047000000, "event": "turn_probability", "probability": 0.9697068929672241, "is_complete": true, "e2e_ms": 240.0761000003513, "source": "periodic"}
+{"ts_ns": 19110000000, "event": "stt_final", "text": "Hi. I'm wondering when I should call you."}
+{"ts_ns": 19282000000, "event": "turn_probability", "probability": 0.978554368019104, "is_complete": true, "e2e_ms": 194.30899999997564}
+{"ts_ns": 19282000000, "event": "user_turn_end"}
+{"ts_ns": 19282000000, "event": "llm_started"}
+{"ts_ns": 20250000000, "event": "llm_token", "text": "You"}
+{"ts_ns": 20250000000, "event": "llm_token", "text": " can"}
+{"ts_ns": 20297000000, "event": "llm_token", "text": " call"}
+{"ts_ns": 20297000000, "event": "llm_token", "text": " me"}
+{"ts_ns": 20391000000, "event": "llm_token", "text": " anytime"}
+{"ts_ns": 20391000000, "event": "llm_token", "text": " you"}
+{"ts_ns": 20500000000, "event": "llm_token", "text": " need"}
+{"ts_ns": 20500000000, "event": "llm_token", "text": " help"}
+{"ts_ns": 20719000000, "event": "llm_token", "text": " or"}
+{"ts_ns": 20719000000, "event": "llm_token", "text": " have"}
+{"ts_ns": 20719000000, "event": "llm_token", "text": " questions"}
+{"ts_ns": 20719000000, "event": "llm_token", "text": "!"}
+{"ts_ns": 20735000000, "event": "llm_token", "text": " I'm"}
+{"ts_ns": 20735000000, "event": "llm_token", "text": " here"}
+{"ts_ns": 20750000000, "event": "tts_started", "context_id": "518b8c21-601a-46af-801e-92fb9e2da300"}
+{"ts_ns": 20766000000, "event": "llm_token", "text": " whenever"}
+{"ts_ns": 20766000000, "event": "llm_token", "text": " you"}
+{"ts_ns": 20782000000, "event": "llm_token", "text": " need"}
+{"ts_ns": 20782000000, "event": "llm_token", "text": " assistance"}
+{"ts_ns": 20782000000, "event": "llm_token", "text": "."}
+{"ts_ns": 20797000000, "event": "llm_stopped"}
+{"ts_ns": 20907000000, "event": "tts_first_audio", "context_id": "518b8c21-601a-46af-801e-92fb9e2da300"}
+{"ts_ns": 20907000000, "event": "bot_speaking_started"}
+{"ts_ns": 22594000000, "event": "tts_stopped", "context_id": "518b8c21-601a-46af-801e-92fb9e2da300"}
+{"ts_ns": 22594000000, "event": "llm_stopped"}
+{"ts_ns": 25485000000, "event": "bot_speaking_stopped"}
+{"ts_ns": 30735000000, "event": "vad_started"}
+{"ts_ns": 30735000000, "event": "interruption"}
+{"ts_ns": 30922000000, "event": "turn_probability", "probability": 0.7580885291099548, "is_complete": true, "e2e_ms": 150.67500000031941, "source": "periodic"}
+{"ts_ns": 31032000000, "event": "stt_interim", "text": "Okay."}
+{"ts_ns": 31157000000, "event": "turn_probability", "probability": 0.5781289935112, "is_complete": true, "e2e_ms": 190.5338000001393, "source": "periodic"}
+{"ts_ns": 31391000000, "event": "turn_probability", "probability": 0.029157280921936035, "is_complete": false, "e2e_ms": 203.02089999995587, "source": "periodic"}
+{"ts_ns": 31641000000, "event": "turn_probability", "probability": 0.42187100648880005, "is_complete": false, "e2e_ms": 223.51700000035635, "source": "periodic"}
+{"ts_ns": 31672000000, "event": "vad_stopped"}
+{"ts_ns": 31813000000, "event": "stt_final", "text": "Okay. Thanks."}
+{"ts_ns": 31844000000, "event": "turn_probability", "probability": 0.970842719078064, "is_complete": true, "e2e_ms": 208.96350000020902, "source": "periodic"}
+{"ts_ns": 32094000000, "event": "turn_probability", "probability": 0.9768373966217041, "is_complete": true, "e2e_ms": 230.8800999999221}
+{"ts_ns": 32188000000, "event": "user_turn_end"}
+{"ts_ns": 32188000000, "event": "llm_started"}
+{"ts_ns": 34079000000, "event": "llm_token", "text": "You're"}
+{"ts_ns": 34079000000, "event": "llm_token", "text": " welcome"}
+{"ts_ns": 34110000000, "event": "llm_token", "text": "!"}
+{"ts_ns": 34110000000, "event": "llm_token", "text": " If"}
+{"ts_ns": 34125000000, "event": "tts_started", "context_id": "da426aca-b89c-4600-9060-322be58f0d19"}
+{"ts_ns": 34141000000, "event": "llm_token", "text": " you"}
+{"ts_ns": 34141000000, "event": "llm_token", "text": " need"}
+{"ts_ns": 34188000000, "event": "llm_token", "text": " anything"}
+{"ts_ns": 34188000000, "event": "llm_token", "text": " else"}
+{"ts_ns": 34219000000, "event": "llm_token", "text": ","}
+{"ts_ns": 34219000000, "event": "llm_token", "text": " just"}
+{"ts_ns": 34235000000, "event": "tts_first_audio", "context_id": "da426aca-b89c-4600-9060-322be58f0d19"}
+{"ts_ns": 34235000000, "event": "bot_speaking_started"}
+{"ts_ns": 34250000000, "event": "llm_token", "text": " let"}
+{"ts_ns": 34250000000, "event": "llm_token", "text": " me"}
+{"ts_ns": 34329000000, "event": "llm_token", "text": " know"}
+{"ts_ns": 34329000000, "event": "llm_token", "text": "!"}
+{"ts_ns": 34344000000, "event": "llm_stopped"}
+{"ts_ns": 34829000000, "event": "tts_stopped", "context_id": "da426aca-b89c-4600-9060-322be58f0d19"}
+{"ts_ns": 34829000000, "event": "llm_stopped"}
+{"ts_ns": 36844000000, "event": "bot_speaking_stopped"}
+{"ts_ns": 40860000000, "event": "vad_started"}
+{"ts_ns": 40860000000, "event": "interruption"}
+{"ts_ns": 41141000000, "event": "turn_probability", "probability": 0.9007586240768433, "is_complete": true, "e2e_ms": 228.35249999980078, "source": "periodic"}
+{"ts_ns": 41375000000, "event": "turn_probability", "probability": 0.01910117268562317, "is_complete": false, "e2e_ms": 214.98830000018643, "source": "periodic"}
+{"ts_ns": 41532000000, "event": "stt_interim", "text": "That's it."}
+{"ts_ns": 41563000000, "event": "turn_probability", "probability": 0.025013476610183716, "is_complete": false, "e2e_ms": 223.8627000001543, "source": "periodic"}
+{"ts_ns": 41657000000, "event": "vad_stopped"}
+{"ts_ns": 41813000000, "event": "turn_probability", "probability": 0.6873466372489929, "is_complete": true, "e2e_ms": 223.70520000004035, "source": "periodic"}
+{"ts_ns": 41813000000, "event": "stt_final", "text": "That's it."}
+{"ts_ns": 42032000000, "event": "turn_probability", "probability": 0.9777120351791382, "is_complete": true, "e2e_ms": 205.0773000000845}
+{"ts_ns": 42125000000, "event": "user_turn_end"}
+{"ts_ns": 42125000000, "event": "llm_started"}
+{"ts_ns": 42969000000, "event": "llm_token", "text": "Alright"}
+{"ts_ns": 42969000000, "event": "llm_token", "text": "!"}
+{"ts_ns": 43047000000, "event": "llm_token", "text": " Feel"}
+{"ts_ns": 43047000000, "event": "llm_token", "text": " free"}
+{"ts_ns": 43047000000, "event": "tts_started", "context_id": "66c3a341-4cda-4984-b265-ba2127d5cc64"}
+{"ts_ns": 43079000000, "event": "llm_token", "text": " to"}
+{"ts_ns": 43079000000, "event": "llm_token", "text": " reach"}
+{"ts_ns": 43125000000, "event": "llm_token", "text": " out"}
+{"ts_ns": 43125000000, "event": "llm_token", "text": " whenever"}
+{"ts_ns": 43157000000, "event": "llm_token", "text": " you"}
+{"ts_ns": 43157000000, "event": "llm_token", "text": " need"}
+{"ts_ns": 43172000000, "event": "tts_first_audio", "context_id": "66c3a341-4cda-4984-b265-ba2127d5cc64"}
+{"ts_ns": 43172000000, "event": "bot_speaking_started"}
+{"ts_ns": 43219000000, "event": "llm_token", "text": "."}
+{"ts_ns": 43219000000, "event": "llm_token", "text": " Have"}
+{"ts_ns": 43360000000, "event": "llm_token", "text": " a"}
+{"ts_ns": 43360000000, "event": "llm_token", "text": " great"}
+{"ts_ns": 43375000000, "event": "llm_token", "text": " day"}
+{"ts_ns": 43375000000, "event": "llm_token", "text": "!"}
+{"ts_ns": 43391000000, "event": "llm_stopped"}
+{"ts_ns": 43985000000, "event": "tts_stopped", "context_id": "66c3a341-4cda-4984-b265-ba2127d5cc64"}
+{"ts_ns": 43985000000, "event": "llm_stopped"}
+{"ts_ns": 46375000000, "event": "bot_speaking_stopped"}

@@ -1,0 +1,33 @@
+{"ts_ns": 0, "event": "pipeline_started", "wall_clock_unix_ns": 1778670626871376400, "session_id": "ff66c2e1"}
+{"ts_ns": 1985000000, "event": "llm_started"}
+{"ts_ns": 4563000000, "event": "llm_token", "text": "I'm"}
+{"ts_ns": 4563000000, "event": "llm_token", "text": " your"}
+{"ts_ns": 4656000000, "event": "llm_token", "text": " friendly"}
+{"ts_ns": 4656000000, "event": "llm_token", "text": " assistant"}
+{"ts_ns": 4656000000, "event": "llm_token", "text": ","}
+{"ts_ns": 4656000000, "event": "llm_token", "text": " here"}
+{"ts_ns": 4688000000, "event": "llm_token", "text": " to"}
+{"ts_ns": 4688000000, "event": "llm_token", "text": " help"}
+{"ts_ns": 4735000000, "event": "llm_token", "text": " you"}
+{"ts_ns": 4735000000, "event": "llm_token", "text": " with"}
+{"ts_ns": 4797000000, "event": "llm_token", "text": " information"}
+{"ts_ns": 4797000000, "event": "llm_token", "text": " and"}
+{"ts_ns": 4891000000, "event": "llm_token", "text": " answer"}
+{"ts_ns": 4891000000, "event": "llm_token", "text": " your"}
+{"ts_ns": 4906000000, "event": "llm_token", "text": " questions"}
+{"ts_ns": 4906000000, "event": "llm_token", "text": "."}
+{"ts_ns": 4938000000, "event": "llm_token", "text": " What"}
+{"ts_ns": 4938000000, "event": "llm_token", "text": " can"}
+{"ts_ns": 4953000000, "event": "tts_started", "context_id": "fbe61942-4b34-4f21-a4e9-6a8bdc35d6d7"}
+{"ts_ns": 4985000000, "event": "llm_token", "text": " I"}
+{"ts_ns": 4985000000, "event": "llm_token", "text": " do"}
+{"ts_ns": 5000000000, "event": "llm_token", "text": " for"}
+{"ts_ns": 5000000000, "event": "llm_token", "text": " you"}
+{"ts_ns": 5016000000, "event": "llm_token", "text": " today"}
+{"ts_ns": 5016000000, "event": "llm_token", "text": "?"}
+{"ts_ns": 5031000000, "event": "llm_stopped"}
+{"ts_ns": 5203000000, "event": "tts_first_audio", "context_id": "fbe61942-4b34-4f21-a4e9-6a8bdc35d6d7"}
+{"ts_ns": 5219000000, "event": "bot_speaking_started"}
+{"ts_ns": 6641000000, "event": "tts_stopped", "context_id": "fbe61942-4b34-4f21-a4e9-6a8bdc35d6d7"}
+{"ts_ns": 6641000000, "event": "llm_stopped"}
+{"ts_ns": 10703000000, "event": "bot_speaking_stopped"}

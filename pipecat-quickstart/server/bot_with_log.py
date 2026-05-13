@@ -31,19 +31,26 @@ from concurrent.futures import Future as ConcurrentFuture  # PeriodicSmartTurnAn
 from datetime import datetime
 
 from pipecat.pipeline.runner import PipelineRunner
+from pipecat.transports.base_output import BaseOutputTransport
 from pipecat.transports.base_transport import BaseTransport
 from pipecat.processors.aggregators.llm_context import LLMContext
 from pipecat.pipeline.task import PipelineParams, PipelineTask
 from pipecat.frames.frames import (
     BotStartedSpeakingFrame,
     BotStoppedSpeakingFrame,
+    FunctionCallInProgressFrame,
+    InterimTranscriptionFrame,
+    InterruptionFrame,
     LLMFullResponseEndFrame,
     LLMFullResponseStartFrame,
     LLMRunFrame,
     LLMTextFrame,
     MetricsFrame,
-    TextFrame,
     TranscriptionFrame,
+    TTSAudioRawFrame,
+    TTSStartedFrame,
+    TTSStoppedFrame,
+    TTSTextFrame,
     UserStoppedSpeakingFrame,
     VADUserStartedSpeakingFrame,
     VADUserStoppedSpeakingFrame,
@@ -64,6 +71,7 @@ from pipecat.services.cartesia.tts import CartesiaTTSService
 from pipecat.transports.smallwebrtc.connection import SmallWebRTCConnection
 from pipecat.transports.base_transport import TransportParams
 from pipecat.audio.vad.silero import SileroVADAnalyzer
+from pipecat.audio.vad.vad_analyzer import VADParams
 from pipecat.turns.user_turn_strategies import UserTurnStrategies
 from pipecat.turns.user_stop.turn_analyzer_user_turn_stop_strategy import TurnAnalyzerUserTurnStopStrategy
 from pipecat.audio.turn.smart_turn.local_smart_turn_v3 import LocalSmartTurnAnalyzerV3  # PeriodicSmartTurnAnalyzer
@@ -79,6 +87,14 @@ ENABLE_LOGGING = True
 # Directory for per-session JSONL log files (created automatically if missing).
 LOG_DIR = os.path.join(os.path.dirname(__file__), "logs")
 
+# ---------------------------------------------------------------------------
+# VAD tuning
+# ---------------------------------------------------------------------------
+# Duration of silence (seconds) before VAD confirms the user has stopped
+# speaking. Lower values reduce turn-end latency at the cost of more false
+# turn-ends on natural pauses. Default (framework): 0.2 s.
+VAD_STOP_SECS: float = 0.2
+
 
 # ---------------------------------------------------------------------------
 # Periodic smart-turn analyzer (disabled)
@@ -93,7 +109,7 @@ class PeriodicSmartTurnAnalyzer(LocalSmartTurnAnalyzerV3):
     without requiring an external streaming SDK.
     """
 
-    def __init__(self, *, inference_interval_ms: int = 50, **kwargs):
+    def __init__(self, *, inference_interval_ms: int = 200, **kwargs):
         """Initialize the periodic smart-turn analyzer.
 
         Args:
@@ -152,25 +168,22 @@ class PeriodicSmartTurnAnalyzer(LocalSmartTurnAnalyzerV3):
 # ---------------------------------------------------------------------------
 
 class ConversationLogObserver(BaseObserver):
-    """Observer that writes a per-session JSONL event log for later analysis.
+    """Observer that writes a per-session JSONL raw event log (Tier 1).
 
-    Three event streams are captured:
-    - ``bot_speech_changed``  — binary, emitted on every start/stop
-    - ``bot_state_changed``   — coarse 5-state machine (idle, listening,
-                                user_speaking, processing, speaking)
-    - ``turn_probability``    — smart-turn model output, every inference
-                                while the user is VAD-active
+    One JSON line is written per frame boundary with zero interpretation.
+    High-level state reconstruction is done in post-processing.
 
-    Each line is a JSON object: ``{"ts_ns": <int>, "event": "<name>", ...}``
-    where ``ts_ns`` is the pipeline-clock nanosecond offset from session start.
-    The ``pipeline_started`` event additionally carries ``wall_clock_unix_ns``
-    so timestamps can be anchored to real time during analysis.
+    Event schema: ``{"ts_ns": <int>, "event": "<name>", ...payload}``
+
+    The ``pipeline_started`` event carries ``wall_clock_unix_ns`` so that
+    ``ts_ns`` offsets (pipeline-clock nanoseconds) can be anchored to real
+    wall time during analysis.
     """
 
     def __init__(self, turn_analyzer: "PeriodicSmartTurnAnalyzer | None" = None):
         super().__init__()
-        self._turn_analyzer = turn_analyzer  # PeriodicSmartTurnAnalyzer
-        self._polling_task: asyncio.Task | None = None  # PeriodicSmartTurnAnalyzer
+        self._turn_analyzer = turn_analyzer
+        self._polling_task: asyncio.Task | None = None
         self._session_id = uuid.uuid4().hex[:8]
         os.makedirs(LOG_DIR, exist_ok=True)
         ts_str = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -178,23 +191,12 @@ class ConversationLogObserver(BaseObserver):
         self._filepath = os.path.join(LOG_DIR, filename)
         # Line-buffered so each event is flushed immediately.
         self._file = open(self._filepath, "w", buffering=1, encoding="utf-8")
-        self._bot_state: str = "idle"
-        self._vad_user_speaking: bool = False
-        # Transcript accumulation
-        self._in_user_turn: bool = False  # True from first VAD start until UserStoppedSpeakingFrame
-        self._user_turn_start_ts: int = 0
-        self._user_transcript_parts: list[str] = []
-        self._bot_turn_start_ts: int = 0
-        self._bot_transcript_parts: list[str] = []
-        self._llm_response_active: bool = False
-        # Deduplicate: each frame is observed once per pipeline segment boundary.
-        # Track seen frame object ids to process each frame exactly once.
+        # Deduplication: use frame.id (stable monotonic int) to process each frame once.
         self._seen_frame_ids: set[int] = set()
-        self._wall_clock_start_ns: int = 0  # set in on_pipeline_started (for wall_clock_unix_ns anchor only)
-        # Pipeline clock reference: derived from the first frame seen so that
-        # periodic timestamps share the same origin as data.timestamp values.
-        # pipeline_ts(t) = t - _mono_pipeline_origin, matching data.timestamp.
-        self._mono_pipeline_origin: int = 0   # time.monotonic_ns() - data.timestamp at first frame
+        # Track which TTS context_ids have emitted their first audio chunk.
+        self._tts_first_audio_seen: set[str] = set()
+        # Pipeline clock reference: time.monotonic_ns() - data.timestamp at first frame.
+        self._mono_pipeline_origin: int = 0
         self._mono_pipeline_ready: bool = False
         logger.info(f"ConversationLogObserver: logging to {self._filepath}")
 
@@ -203,22 +205,17 @@ class ConversationLogObserver(BaseObserver):
     # ------------------------------------------------------------------
 
     async def on_pipeline_started(self):
-        """Log session anchor: ties pipeline ts_ns offsets to wall time."""
-        self._wall_clock_start_ns = time.time_ns()
-        self._log("pipeline_started", 0, wall_clock_unix_ns=self._wall_clock_start_ns, session_id=self._session_id)  # ts_ns=0 is a placeholder; real origin derived from first frame
-        if self._turn_analyzer is not None:  # PeriodicSmartTurnAnalyzer
+        wall_clock_ns = time.time_ns()
+        self._log("pipeline_started", 0, wall_clock_unix_ns=wall_clock_ns, session_id=self._session_id)
+        if self._turn_analyzer is not None:
             self._polling_task = asyncio.create_task(self._poll_periodic_metrics())
 
-    async def _poll_periodic_metrics(self):  # PeriodicSmartTurnAnalyzer
-        """Drain PeriodicSmartTurnAnalyzer results and write them to the log."""
+    async def _poll_periodic_metrics(self):
+        """Drain PeriodicSmartTurnAnalyzer results and write turn_probability events."""
         try:
             while True:
-                await asyncio.sleep(0.05)  # 20 Hz — well below the 200 ms inference interval
-                if not (self._vad_user_speaking or self._in_user_turn):
-                    continue
-                if self._turn_analyzer is None:
-                    continue
-                if not self._mono_pipeline_ready:
+                await asyncio.sleep(0.05)  # 20 Hz
+                if self._turn_analyzer is None or not self._mono_pipeline_ready:
                     continue
                 for m in self._turn_analyzer.drain_metrics():
                     ts = time.monotonic_ns() - self._mono_pipeline_origin
@@ -234,17 +231,9 @@ class ConversationLogObserver(BaseObserver):
             pass
 
     async def on_push_frame(self, data: FramePushed):
-        # Only process downstream frames to avoid double-logging bidirectional
-        # system frames such as BotStartedSpeakingFrame.
         if data.direction != FrameDirection.DOWNSTREAM:
             return
 
-        # Each frame passes through once per pipeline segment boundary; skip
-        # frames we have already processed to avoid duplicate events/accumulation.
-        # Use frame.id (a stable monotonic integer) rather than Python's id()
-        # (memory address) which gets reused after GC and causes false skips.
-        # Establish the pipeline-clock origin from the first frame so that
-        # time.monotonic_ns() - _mono_pipeline_origin == data.timestamp.
         if not self._mono_pipeline_ready:
             self._mono_pipeline_origin = time.monotonic_ns() - data.timestamp
             self._mono_pipeline_ready = True
@@ -252,92 +241,91 @@ class ConversationLogObserver(BaseObserver):
         frame_id = data.frame.id
         if frame_id in self._seen_frame_ids:
             return
-        self._seen_frame_ids.add(frame_id)
 
         ts = data.timestamp
         frame = data.frame
+        mark_as_seen = True
 
         if isinstance(frame, VADUserStartedSpeakingFrame):
-            self._vad_user_speaking = True
-            if not self._in_user_turn:
-                # First VAD onset for this turn — record start and reset transcript.
-                self._in_user_turn = True
-                self._user_turn_start_ts = ts
-                self._user_transcript_parts = []
-            # else: mid-turn VAD re-fire after a pause — keep existing start/transcript
-            self._transition_state("user_speaking", ts)
+            self._log("vad_started", ts)
 
         elif isinstance(frame, VADUserStoppedSpeakingFrame):
-            # VAD confirmed silence — note: state stays 'user_speaking' until
-            # the turn model releases the turn via UserStoppedSpeakingFrame.
-            self._vad_user_speaking = False
-
-        elif isinstance(frame, TranscriptionFrame):
-            # Must come before TextFrame — TranscriptionFrame is a TextFrame subclass.
-            # Guard: only collect while tracking a turn; late STT results from a
-            # finished turn must not contaminate the next one.
-            if self._in_user_turn:
-                self._user_transcript_parts.append(frame.text)
+            self._log("vad_stopped", ts)
 
         elif isinstance(frame, UserStoppedSpeakingFrame):
-            text = " ".join(self._user_transcript_parts).strip()
-            self._log("user_turn", ts, start_ts_ns=self._user_turn_start_ts, end_ts_ns=ts, text=text)
-            self._in_user_turn = False
-            self._user_transcript_parts = []  # clear immediately so stale text can't leak
-            self._transition_state("processing", ts)
+            self._log("user_turn_end", ts)
+
+        elif isinstance(frame, InterimTranscriptionFrame):
+            self._log("stt_interim", ts, text=frame.text)
+
+        elif isinstance(frame, TranscriptionFrame):
+            self._log("stt_final", ts, text=frame.text)
 
         elif isinstance(frame, LLMFullResponseStartFrame):
-            self._bot_transcript_parts = []
-            self._llm_response_active = True
+            self._log("llm_started", ts)
 
         elif isinstance(frame, LLMFullResponseEndFrame):
-            self._llm_response_active = False
+            self._log("llm_stopped", ts)
 
         elif isinstance(frame, LLMTextFrame):
-            if self._llm_response_active:
-                self._bot_transcript_parts.append(frame.text)
+            self._log("llm_token", ts, text=frame.text)
+
+        elif isinstance(frame, FunctionCallInProgressFrame):
+            self._log("llm_function_call", ts, function_name=frame.function_name)
+
+        elif isinstance(frame, TTSStartedFrame):
+            self._log("tts_started", ts, context_id=frame.context_id)
+
+        elif isinstance(frame, TTSStoppedFrame):
+            self._log("tts_stopped", ts, context_id=frame.context_id)
+
+        elif isinstance(frame, TTSTextFrame):
+            if isinstance(data.source, BaseOutputTransport):
+                # Log with correct timing: frame has passed through the output
+                # transport, so this fires approximately at actual playback time.
+                self._log("tts_text", ts, text=frame.text, context_id=frame.context_id,
+                          aggregated_by=str(frame.aggregated_by))
+            else:
+                # First pass from TTS service — wait for the post-transport pass.
+                mark_as_seen = False
+
+        elif isinstance(frame, TTSAudioRawFrame):
+            cid = frame.context_id
+            if cid is not None and cid not in self._tts_first_audio_seen:
+                self._tts_first_audio_seen.add(cid)
+                self._log("tts_first_audio", ts, context_id=cid)
 
         elif isinstance(frame, BotStartedSpeakingFrame):
-            self._bot_turn_start_ts = ts
-            self._transition_state("speaking", ts)
-            self._log("bot_speech_changed", ts, active=True)
+            self._log("bot_speaking_started", ts)
 
         elif isinstance(frame, BotStoppedSpeakingFrame):
-            text = "".join(self._bot_transcript_parts).strip()
-            self._log("bot_turn", ts, start_ts_ns=self._bot_turn_start_ts, end_ts_ns=ts, text=text)
-            self._transition_state("listening", ts)
-            self._log("bot_speech_changed", ts, active=False)
+            self._log("bot_speaking_stopped", ts)
+
+        elif isinstance(frame, InterruptionFrame):
+            self._log("interruption", ts)
 
         elif isinstance(frame, MetricsFrame):
-            if self._bot_state == "user_speaking":
-                for item in frame.data:
-                    if isinstance(item, TurnMetricsData):
-                        self._log(
-                            "turn_probability",
-                            ts,
-                            probability=item.probability,
-                            is_complete=item.is_complete,
-                            e2e_ms=item.e2e_processing_time_ms,
-                        )
+            for item in frame.data:
+                if isinstance(item, TurnMetricsData):
+                    self._log(
+                        "turn_probability",
+                        ts,
+                        probability=item.probability,
+                        is_complete=item.is_complete,
+                        e2e_ms=item.e2e_processing_time_ms,
+                    )
+
+        if mark_as_seen:
+            self._seen_frame_ids.add(frame_id)
 
     async def cleanup(self):
-        if self._polling_task is not None:  # PeriodicSmartTurnAnalyzer
+        if self._polling_task is not None:
             self._polling_task.cancel()
             self._polling_task = None
         await super().cleanup()
         if self._file and not self._file.closed:
             self._file.flush()
             self._file.close()
-
-    # ------------------------------------------------------------------
-    # Internal helpers
-    # ------------------------------------------------------------------
-
-    def _transition_state(self, new_state: str, ts_ns: int):
-        """Emit a bot_state_changed event only when the state actually changes."""
-        if new_state != self._bot_state:
-            self._bot_state = new_state
-            self._log("bot_state_changed", ts_ns, state=new_state)
 
     def _log(self, event: str, ts_ns: int, **payload):
         row = {"ts_ns": ts_ns, "event": event, **payload}
@@ -376,7 +364,7 @@ async def run_bot(transport: BaseTransport):
     user_aggregator, assistant_aggregator = LLMContextAggregatorPair(
         context,
         user_params=LLMUserAggregatorParams(
-            vad_analyzer=SileroVADAnalyzer(),
+            vad_analyzer=SileroVADAnalyzer(params=VADParams(stop_secs=VAD_STOP_SECS)),
             user_turn_strategies=UserTurnStrategies(  # PeriodicSmartTurnAnalyzer
                 stop=[TurnAnalyzerUserTurnStopStrategy(turn_analyzer=periodic_analyzer)]
             ),

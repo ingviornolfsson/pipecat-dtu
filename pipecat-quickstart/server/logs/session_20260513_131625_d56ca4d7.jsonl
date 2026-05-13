@@ -1,0 +1,32 @@
+{"ts_ns": 0, "event": "pipeline_started", "wall_clock_unix_ns": 1778670986093083500, "session_id": "d56ca4d7"}
+{"ts_ns": 828000000, "event": "llm_started"}
+{"ts_ns": 2359000000, "event": "llm_token", "text": "I"}
+{"ts_ns": 2359000000, "event": "llm_token", "text": "\u2019m"}
+{"ts_ns": 2422000000, "event": "llm_token", "text": " your"}
+{"ts_ns": 2422000000, "event": "llm_token", "text": " helpful"}
+{"ts_ns": 2422000000, "event": "llm_token", "text": " assistant"}
+{"ts_ns": 2422000000, "event": "llm_token", "text": ","}
+{"ts_ns": 2453000000, "event": "llm_token", "text": " here"}
+{"ts_ns": 2453000000, "event": "llm_token", "text": " to"}
+{"ts_ns": 2484000000, "event": "llm_token", "text": " chat"}
+{"ts_ns": 2484000000, "event": "llm_token", "text": " and"}
+{"ts_ns": 2516000000, "event": "llm_token", "text": " answer"}
+{"ts_ns": 2516000000, "event": "llm_token", "text": " your"}
+{"ts_ns": 2594000000, "event": "llm_token", "text": " questions"}
+{"ts_ns": 2594000000, "event": "llm_token", "text": "."}
+{"ts_ns": 2625000000, "event": "llm_token", "text": " What"}
+{"ts_ns": 2625000000, "event": "llm_token", "text": " would"}
+{"ts_ns": 2641000000, "event": "tts_started", "context_id": "9625c36c-1dd3-40aa-a6fe-4822cbdb822b"}
+{"ts_ns": 2672000000, "event": "llm_token", "text": " you"}
+{"ts_ns": 2672000000, "event": "llm_token", "text": " like"}
+{"ts_ns": 2703000000, "event": "llm_token", "text": " to"}
+{"ts_ns": 2703000000, "event": "llm_token", "text": " talk"}
+{"ts_ns": 2719000000, "event": "llm_token", "text": " about"}
+{"ts_ns": 2719000000, "event": "llm_token", "text": " today"}
+{"ts_ns": 2734000000, "event": "llm_token", "text": "?"}
+{"ts_ns": 2750000000, "event": "llm_stopped"}
+{"ts_ns": 2750000000, "event": "tts_first_audio", "context_id": "9625c36c-1dd3-40aa-a6fe-4822cbdb822b"}
+{"ts_ns": 2766000000, "event": "bot_speaking_started"}
+{"ts_ns": 3797000000, "event": "tts_stopped", "context_id": "9625c36c-1dd3-40aa-a6fe-4822cbdb822b"}
+{"ts_ns": 3813000000, "event": "llm_stopped"}
+{"ts_ns": 7688000000, "event": "bot_speaking_stopped"}

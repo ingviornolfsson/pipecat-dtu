@@ -1,57 +1,29 @@
 #!/usr/bin/env python3
-"""Plot a session JSONL log produced by ConversationLogObserver in bot_dev.py.
+"""Plot VAD/Turn activity and turn probability in a single panel.
 
 Usage::
 
-    python plot_session.py logs/session_<ts>_<id>.jsonl
-    python plot_session.py logs/session_<ts>_<id>.jsonl --save plot.png
-
-Three vertically stacked subplots share the same time axis (seconds from
-pipeline start):
-  1. Bot state  — step plot over 5 categorical states
-  2. Bot speech — boolean filled step (speaking / silent)
-  3. Turn probability — scatter + line from the smart-turn model
+    python plot_vad.py [logfile | index]
+    python plot_vad.py --save plot.png
 """
 
 import argparse
 import json
 import sys
 import textwrap
-from collections import defaultdict
 from pathlib import Path
 
-import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
-import numpy as np
+import matplotlib  # type: ignore[import-untyped]
+import matplotlib.pyplot as plt  # type: ignore[import-untyped]
+import matplotlib.patches as mpatches  # type: ignore[import-untyped]
 
 
 # ---------------------------------------------------------------------------
-# Constants
-# ---------------------------------------------------------------------------
-
-BOT_STATES = ["idle", "listening", "user_speaking", "processing", "speaking"]
-STATE_COLORS = {
-    "idle": "#aaaaaa",
-    "listening": "#4fc3f7",
-    "user_speaking": "#81c784",
-    "processing": "#ffb74d",
-    "speaking": "#e57373",
-}
-
-
-# ---------------------------------------------------------------------------
-# Loading & deduplication
+# Loading & deduplication  (identical to plot_session.py)
 # ---------------------------------------------------------------------------
 
 def load_events(path: Path) -> tuple[list[dict], dict]:
-    """Load JSONL, deduplicate, and report anomalies.
-
-    Returns:
-        events: deduplicated list of event dicts (with 'ts_s' added)
-        report: dict summarising duplication diagnostics
-    """
     raw: list[dict] = []
-
     with path.open(encoding="utf-8") as fh:
         for lineno, line in enumerate(fh, 1):
             line = line.strip()
@@ -62,7 +34,6 @@ def load_events(path: Path) -> tuple[list[dict], dict]:
             except json.JSONDecodeError as exc:
                 print(f"  WARNING line {lineno}: JSON parse error — {exc}", file=sys.stderr)
 
-    # --- exact duplicates (every field identical) --------------------------
     seen_exact: dict[str, int] = {}
     exact_dup_count = 0
     deduped: list[dict] = []
@@ -74,29 +45,9 @@ def load_events(path: Path) -> tuple[list[dict], dict]:
             seen_exact[key] = 1
             deduped.append(ev)
 
-    # --- same (ts_ns, event) with *different* payload ----------------------
-    # Group by (ts_ns, event) and look for payload variance
-    bucket: dict[tuple, list[dict]] = defaultdict(list)
-    for ev in deduped:
-        bucket[(ev.get("ts_ns"), ev.get("event"))].append(ev)
-
-    conflict_groups: list[list[dict]] = []
-    for (ts, evt), group in bucket.items():
-        if len(group) > 1:
-            # Check whether all payloads are identical after removing ts_ns
-            payloads = [
-                {k: v for k, v in e.items() if k not in ("ts_ns", "event")}
-                for e in group
-            ]
-            if len({json.dumps(p, sort_keys=True) for p in payloads}) > 1:
-                conflict_groups.append(group)
-
-    # Add seconds column
     for ev in deduped:
         ev["ts_s"] = ev["ts_ns"] / 1e9
 
-    # Guard: remove events with timestamps beyond 10 minutes — these are
-    # almost certainly wall-clock Unix ns accidentally used as pipeline offsets.
     MAX_SESSION_S = 600.0
     outliers = [ev for ev in deduped if ev["ts_s"] > MAX_SESSION_S]
     deduped = [ev for ev in deduped if ev["ts_s"] <= MAX_SESSION_S]
@@ -105,9 +56,7 @@ def load_events(path: Path) -> tuple[list[dict], dict]:
         "raw_count": len(raw),
         "exact_dup_count": exact_dup_count,
         "after_dedup": len(deduped),
-        "conflict_groups": conflict_groups,
         "outlier_count": len(outliers),
-        "outlier_events": outliers,
     }
     return deduped, report
 
@@ -115,301 +64,524 @@ def load_events(path: Path) -> tuple[list[dict], dict]:
 def print_quality_report(report: dict, path: Path) -> None:
     raw = report["raw_count"]
     exact = report["exact_dup_count"]
-    conflicts = report["conflict_groups"]
     after = report["after_dedup"]
     outliers = report.get("outlier_count", 0)
-    outlier_events = report.get("outlier_events", [])
 
-    issues = exact > 0 or len(conflicts) > 0 or outliers > 0
+    issues = exact > 0 or outliers > 0
     tag = "WARNING" if issues else "OK"
 
     print(f"\n=== Data-quality report for {path.name} [{tag}] ===")
     print(f"  Raw lines:            {raw}")
     print(f"  Exact duplicates:     {exact}  (removed)")
     print(f"  Events after dedup:   {after}")
-
     if outliers > 0:
         pct = 100 * outliers / raw
         print(
             f"\n  ⚠  {outliers} event(s) ({pct:.1f}% of raw) had ts_ns > 10 min "
-            "and were removed (likely wall-clock Unix ns used as pipeline offset)."
+            "and were removed."
         )
-
-    if exact > 0:
-        pct = 100 * exact / raw
-        print(
-            f"\n  ⚠  {exact} exact-duplicate lines ({pct:.1f}% of raw). "
-            "This likely means on_push_frame fires multiple times per frame "
-            "(once per pipeline segment boundary). Consider deduplicating at "
-            "the observer level."
-        )
-
-    if conflicts:
-        print(
-            f"\n  ⚠  {len(conflicts)} group(s) share the same (ts_ns, event) "
-            "but carry DIFFERENT payloads — possible logging race or "
-            "frame-reuse issue:"
-        )
-        for i, group in enumerate(conflicts[:5], 1):  # show at most 5
-            print(f"    Group {i} ({group[0]['event']} @ ts_ns={group[0]['ts_ns']}):")
-            for ev in group:
-                payload = {k: v for k, v in ev.items() if k not in ("ts_ns", "event")}
-                print(f"      {payload}")
-        if len(conflicts) > 5:
-            print(f"    ... and {len(conflicts) - 5} more group(s).")
-
     print()
 
 
 # ---------------------------------------------------------------------------
-# Plotting helpers
+# Series builders
 # ---------------------------------------------------------------------------
 
-def build_state_series(events: list[dict]) -> tuple[list[float], list[int]]:
-    """Return (times, state_indices) as a step series."""
-    state_events = [e for e in events if e["event"] == "bot_state_changed"]
-    # Prepend t=0 with "idle"
-    times = [0.0] + [e["ts_s"] for e in state_events]
-    states = ["idle"] + [e["state"] for e in state_events]
-    indices = [BOT_STATES.index(s) for s in states]
-    return times, indices
-
-
-def build_speech_series(events: list[dict]) -> tuple[list[float], list[int]]:
-    """Return (times, active_int) as a boolean step series."""
-    speech_events = [e for e in events if e["event"] == "bot_speech_changed"]
-    times = [0.0] + [e["ts_s"] for e in speech_events]
-    active = [0] + [int(e["active"]) for e in speech_events]
-    return times, active
+def build_vad_series(events: list[dict]) -> tuple[list[float], list[int], list[float]]:
+    times, active, turn_ends = [0.0], [0], []
+    for e in events:
+        if e["event"] == "vad_started":
+            times.append(e["ts_s"]); active.append(1)
+        elif e["event"] == "vad_stopped":
+            times.append(e["ts_s"]); active.append(0)
+        elif e["event"] == "user_turn_end":
+            turn_ends.append(e["ts_s"])
+    return times, active, turn_ends
 
 
 def build_turn_prob_series(events: list[dict]) -> tuple[list[float], list[float], list[bool]]:
-    """Return (times, probabilities, is_complete_flags)."""
-    tp_events = [e for e in events if e["event"] == "turn_probability"]
-    times = [e["ts_s"] for e in tp_events]
-    probs = [e["probability"] for e in tp_events]
-    complete = [e.get("is_complete", False) for e in tp_events]
-    return times, probs, complete
+    tp = [e for e in events if e["event"] == "turn_probability"]
+    return (
+        [e["ts_s"] for e in tp],
+        [e["probability"] for e in tp],
+        [e.get("is_complete", False) for e in tp],
+    )
 
 
-def build_transcript_series(events: list[dict]) -> tuple[list[dict], list[dict]]:
-    """Return (user_turns, bot_turns) as lists of {start_s, end_s, text}."""
-    user_turns = [
-        {
-            "start_s": e["start_ts_ns"] / 1e9,
-            "end_s": e["end_ts_ns"] / 1e9,
-            "text": e.get("text", ""),
+def build_bot_panel_data(
+    events: list[dict], t_max: float
+) -> tuple[
+    list[float], list[float], list[float],
+    list[tuple[float, float]], list[tuple[float, float, str]]
+]:
+    """Return LLM start times, stop times, token times, bot-speaking spans,
+    and bot utterances paired to bot-speaking spans.
+    """
+    llm_starts: list[float] = []
+    llm_stops: list[float] = []
+    llm_token_times: list[float] = []
+    bot_spans: list[tuple[float, float]] = []
+    bot_utterances: list[tuple[float, float, str]] = []
+
+    llm_start: float | None = None
+    llm_tokens: list[str] = []
+    bot_start: float | None = None
+
+    for e in sorted(events, key=lambda x: x["ts_s"]):
+        ev = e["event"]
+        if ev == "llm_started":
+            llm_start = float(e["ts_s"])
+            llm_starts.append(llm_start)
+            llm_tokens = []
+        elif ev == "llm_token" and llm_start is not None:
+            llm_token_times.append(e["ts_s"])
+            llm_tokens.append(e.get("text", ""))
+        elif ev == "llm_stopped" and llm_start is not None:
+            llm_stops.append(e["ts_s"])
+            bot_utterances.append((llm_start, e["ts_s"], "".join(llm_tokens)))
+            llm_start = None
+            llm_tokens = []
+        elif ev == "bot_speaking_started":
+            bot_start = e["ts_s"]
+        elif ev == "bot_speaking_stopped" and bot_start is not None:
+            bot_spans.append((bot_start, e["ts_s"]))
+            bot_start = None
+
+    if llm_start is not None:
+        llm_stops.append(t_max)
+        bot_utterances.append((llm_start, t_max, "".join(llm_tokens)))
+    if bot_start is not None:
+        bot_spans.append((bot_start, t_max))
+
+    # Interruption times — used to mark incomplete bot turns with "...".
+    interruption_times = [e["ts_s"] for e in events if e["event"] == "interruption"]
+
+    def _was_interrupted(span_end: float) -> bool:
+        return any(abs(t - span_end) < 0.2 for t in interruption_times)
+
+    # Pair each LLM utterance with the first bot-speaking span that starts
+    # at or after the LLM span start, so text can be anchored to bot speech.
+    paired: list[tuple[float, float, str]] = []
+    for llm_s, llm_e, text in bot_utterances:
+        match = next(
+            ((bs, be) for bs, be in bot_spans if bs >= llm_s - 0.5),
+            None,
+        )
+        end_time = match[1] if match else llm_e
+        suffix = " ..." if _was_interrupted(end_time) else ""
+        if match:
+            paired.append((match[0], match[1], text + suffix))
+        else:
+            paired.append((llm_s, llm_e, text + suffix))
+
+    # If tts_text events are present (new log format), use them for accurate
+    # spoken text — words not played due to an interruption are never logged.
+    tts_text_events = [e for e in events if e["event"] == "tts_text"]
+    if tts_text_events and bot_spans:
+        ctx_words: dict[str, list[str]] = {}
+        for e in sorted(tts_text_events, key=lambda x: x["ts_s"]):
+            cid = e.get("context_id") or ""
+            ctx_words.setdefault(cid, []).append(e.get("text", ""))
+
+        ctx_first_audio: dict[str, float] = {
+            e["context_id"]: e["ts_s"]
+            for e in events
+            if e["event"] == "tts_first_audio" and e.get("context_id")
         }
-        for e in events if e["event"] == "user_turn"
-    ]
-    bot_turns = [
-        {
-            "start_s": e["start_ts_ns"] / 1e9,
-            "end_s": e["end_ts_ns"] / 1e9,
-            "text": e.get("text", ""),
-        }
-        for e in events if e["event"] == "bot_turn"
-    ]
-    return user_turns, bot_turns
+
+        spoken_paired: list[tuple[float, float, str]] = []
+        for cid, words in ctx_words.items():
+            text = " ".join(w.strip() for w in words if w.strip())
+            if not text:
+                continue
+            fa_time = ctx_first_audio.get(cid)
+            if fa_time is not None:
+                match = min(bot_spans, key=lambda s: abs(s[0] - fa_time))
+                if abs(match[0] - fa_time) < 0.5:
+                    suffix = " ..." if _was_interrupted(match[1]) else ""
+                    spoken_paired.append((match[0], match[1], text + suffix))
+        return llm_starts, llm_stops, llm_token_times, bot_spans, spoken_paired
+
+    return llm_starts, llm_stops, llm_token_times, bot_spans, paired
+
+
+def build_transcript_turns(events: list[dict]) -> list[tuple[float, float, float, str]]:
+    """Group stt_final texts into turns bounded by vad_started / user_turn_end.
+
+    Returns (vad_start, vad_stop, turn_end, text). turn_end is the user_turn_end
+    timestamp, used as the right anchor for the transcript label.
+    """
+    turns: list[tuple[float, float, float, str]] = []
+    current_start: float | None = None
+    current_stop: float | None = None
+    current_texts: list[str] = []
+    for e in sorted(events, key=lambda x: x["ts_s"]):
+        ev = e["event"]
+        if ev == "vad_started":
+            if current_start is None:
+                # First VAD segment of a new turn — initialise everything.
+                current_start = e["ts_s"]
+                current_stop = None
+                current_texts = []
+            # else: mid-turn VAD restart (user paused briefly) — keep
+            # accumulated texts and the original turn start; current_stop
+            # will be updated again when vad_stopped fires.
+        elif ev == "vad_stopped" and current_start is not None:
+            current_stop = e["ts_s"]
+        elif ev == "stt_final" and current_start is not None:
+            current_texts.append(e.get("text", ""))
+        elif ev == "user_turn_end" and current_start is not None:
+            text = " ".join(current_texts).strip()
+            stop = current_stop if current_stop is not None else e["ts_s"]
+            if text:
+                turns.append((current_start, stop, e["ts_s"], text))
+            current_start = None
+            current_stop = None
+            current_texts = []
+    return turns
+
+
+def build_tts_gantt(events: list[dict], t_max: float) -> list[dict]:
+    """Return per-context TTS bars with greedy row packing to avoid overlap."""
+    starts: dict[str, float] = {}
+    first_audio: dict[str, float] = {}
+    results: list[dict] = []
+
+    for e in sorted(events, key=lambda x: x["ts_s"]):
+        cid = e.get("context_id") or ""
+        if e["event"] == "tts_started":
+            starts[cid] = e["ts_s"]
+        elif e["event"] == "tts_first_audio" and cid:
+            first_audio[cid] = e["ts_s"]
+        elif e["event"] == "tts_stopped" and cid in starts:
+            results.append({
+                "context_id": cid,
+                "start_s": starts.pop(cid),
+                "end_s": e["ts_s"],
+                "first_audio_s": first_audio.get(cid),
+            })
+
+    for cid, start in starts.items():
+        results.append({
+            "context_id": cid,
+            "start_s": start,
+            "end_s": t_max,
+            "first_audio_s": first_audio.get(cid),
+        })
+
+    row_ends: list[float] = []
+    for bar in sorted(results, key=lambda x: x["start_s"]):
+        placed = False
+        for r, end in enumerate(row_ends):
+            if bar["start_s"] >= end - 1e-6:
+                bar["row"] = r
+                row_ends[r] = bar["end_s"]
+                placed = True
+                break
+        if not placed:
+            bar["row"] = len(row_ends)
+            row_ends.append(bar["end_s"])
+
+    return results
 
 
 # ---------------------------------------------------------------------------
-# Main plot
+# Plot
 # ---------------------------------------------------------------------------
+
+# Y-axis layout
+# 0 = VAD off / turn_prob 0
+# 1 = VAD on  / turn_prob 1  ← top of visible area; text hangs downward from here
+Y_BOTTOM = -0.08
+Y_TOP = 1.25
+TEXT_MARGIN_S = 0.25  # seconds of padding between text anchor and span edge
+
 
 def plot(events: list[dict], title: str, save_path: str | None = None) -> None:
     t_max = max((e["ts_s"] for e in events), default=1.0) * 1.05
 
-    fig, axes = plt.subplots(
-        4, 1,
-        figsize=(14, 9),
-        sharex=True,
-        gridspec_kw={"height_ratios": [2, 1, 2, 3], "hspace": 0.08},
-    )
-
-    # ---- Subplot 1: bot state --------------------------------------------
-    ax_state = axes[0]
-    state_times, state_idx = build_state_series(events)
-
-    # Draw colored background bands for each segment
-    for i in range(len(state_times)):
-        t0 = state_times[i]
-        t1 = state_times[i + 1] if i + 1 < len(state_times) else t_max
-        s = BOT_STATES[state_idx[i]]
-        ax_state.axvspan(t0, t1, color=STATE_COLORS[s], alpha=0.25)
-
-    ax_state.step(state_times, state_idx, where="post", color="steelblue", linewidth=1.5)
-    ax_state.set_yticks(range(len(BOT_STATES)))
-    ax_state.set_yticklabels(BOT_STATES, fontsize=8)
-    ax_state.set_ylabel("Bot state", fontsize=9)
-    ax_state.set_ylim(-0.5, len(BOT_STATES) - 0.5)
-    ax_state.grid(axis="x", linestyle=":", alpha=0.4)
-
-    # Legend patches
-    patches = [mpatches.Patch(color=c, alpha=0.5, label=s) for s, c in STATE_COLORS.items()]
-    ax_state.legend(handles=patches, fontsize=7, loc="upper right", ncol=5)
-
-    # ---- Subplot 2: bot speech -------------------------------------------
-    ax_speech = axes[1]
-    sp_times, sp_active = build_speech_series(events)
-    ax_speech.step(sp_times, sp_active, where="post", color="#e57373", linewidth=1.5)
-    ax_speech.fill_between(sp_times, sp_active, step="post", color="#e57373", alpha=0.25)
-    ax_speech.set_yticks([0, 1])
-    ax_speech.set_yticklabels(["silent", "speaking"], fontsize=8)
-    ax_speech.set_ylabel("Bot speech", fontsize=9)
-    ax_speech.set_ylim(-0.1, 1.4)
-    ax_speech.grid(axis="x", linestyle=":", alpha=0.4)
-
-    # ---- Subplot 3: turn probability ------------------------------------
-    ax_tp = axes[2]
+    vad_times, vad_active, turn_ends = build_vad_series(events)
+    transcript_turns = build_transcript_turns(events)
     tp_times, tp_probs, tp_complete = build_turn_prob_series(events)
+    llm_starts, llm_stops, llm_token_times, bot_spans, bot_utterances = build_bot_panel_data(events, t_max)
+    tts_bars = build_tts_gantt(events, t_max)
+    stt_interim_times = [e["ts_s"] for e in events if e["event"] == "stt_interim"]
+    cmap = matplotlib.colormaps["tab10"]  # type: ignore[attr-defined]
+
+    fig, (ax_vad, ax_bot) = plt.subplots(
+        2, 1,
+        figsize=(14, 8),
+        sharex=True,
+        gridspec_kw={"height_ratios": [1, 1], "hspace": 0.08},
+    )
+    ax_tp = ax_vad.twinx()
+
+    # =========================================================================
+    # Panel 1 — VAD / Turn probability
+    # =========================================================================
+
+    # ylim set after tight_layout to prevent twinx from resetting it (see end of function)
+
+    # VAD as axvspan patches (like bot panel)
+    VAD_YMIN, VAD_YMAX = 0.05, 0.95
+    vad_on: float | None = None
+    for t, a in zip(vad_times, vad_active):
+        if a == 1 and vad_on is None:
+            vad_on = t
+        elif a == 0 and vad_on is not None:
+            ax_vad.axvspan(vad_on, t, ymin=VAD_YMIN, ymax=VAD_YMAX, color="#66bb6a", alpha=0.45, zorder=1)
+            vad_on = None
+    if vad_on is not None:
+        ax_vad.axvspan(vad_on, t_max, ymin=VAD_YMIN, ymax=VAD_YMAX, color="#66bb6a", alpha=0.45, zorder=1)
+
+    for t in stt_interim_times:
+        ax_vad.axvline(t, ymin=VAD_YMIN, ymax=VAD_YMAX, color="#aaaaaa", linewidth=0.9, alpha=0.85, zorder=3)
+    for t in turn_ends:
+        ax_vad.axvline(t, color="#2e7d32", linestyle="--", linewidth=1.2, alpha=0.9, zorder=3)
+
+    ax_vad.set_yticks([])
+    ax_vad.set_ylabel("VAD active", fontsize=10)
+    ax_vad.grid(axis="x", linestyle=":", alpha=0.4)
+    ax_vad.set_xlim(0, t_max)
+
+    ax_tp.set_yticks([0.0, 0.5, 1.0])
+    ax_tp.set_yticklabels(["0.0", "0.5", "1.0"], fontsize=9)
+    ax_tp.set_ylabel("Turn probability", fontsize=10)
 
     if tp_times:
-        # Line connecting all points
-        ax_tp.plot(tp_times, tp_probs, color="gray", linewidth=0.8, zorder=1)
-        # Scatter: colour by is_complete
-        colors = ["#e57373" if c else "#81c784" for c in tp_complete]
-        ax_tp.scatter(tp_times, tp_probs, c=colors, s=40, zorder=2)
-        # 0.5 threshold line
-        ax_tp.axhline(0.5, color="black", linestyle="--", linewidth=0.8, alpha=0.5)
+        # Break the connecting line wherever a user_turn_end falls between samples
+        # so long cross-turn segments are not drawn.
+        line_t: list[float] = [tp_times[0]]
+        line_p: list[float] = [tp_probs[0]]
+        for i in range(1, len(tp_times)):
+            if any(tp_times[i - 1] <= te <= tp_times[i] for te in turn_ends):
+                line_t.append(float("nan"))
+                line_p.append(float("nan"))
+            line_t.append(tp_times[i])
+            line_p.append(tp_probs[i])
+        ax_tp.plot(line_t, line_p, color="gray", linewidth=0.8, zorder=1)
+        dot_colors = ["#e57373" if c else "#81c784" for c in tp_complete]
+        ax_tp.scatter(tp_times, tp_probs, c=dot_colors, s=25, zorder=2)
+        ax_tp.axhline(0.5, color="black", linestyle="--", linewidth=0.8, alpha=0.4)
 
-        # Legend
-        inc_patch = mpatches.Patch(color="#81c784", label="incomplete")
-        cmp_patch = mpatches.Patch(color="#e57373", label="is_complete=True")
-        ax_tp.legend(handles=[inc_patch, cmp_patch], fontsize=7, loc="upper right")
+    # Helper: duration of the most recent bot-speaking span that ended before start_s.
+    # Used to size text boxes consistently with the preceding bot turn.
+    _bot_spans_sorted = sorted(bot_spans, key=lambda x: x[1])
+
+    def _prev_bot_duration(start_s: float, fallback: float) -> float:
+        dur = None
+        for bs, be in _bot_spans_sorted:
+            if be <= start_s:
+                dur = be - bs
+            else:
+                break
+        return dur if dur is not None else fallback
+
+    # Transcript text objects — right-aligned, anchored at user_turn_end (minus a
+    # small margin) and sitting above the VAD band (va="bottom" at y=1.02).
+    # Wrapping width equals the span from the first VAD start to user_turn_end.
+    text_objects: list[tuple] = []
+    prev_turn_end = 0.0
+    for start, vad_stop, turn_end, orig_text in transcript_turns:
+        wrap_dur = (turn_end - prev_turn_end)/3
+        t = ax_vad.text(
+            turn_end - TEXT_MARGIN_S, 1.02, "",
+            fontsize=8, va="bottom", ha="right",
+            clip_on=False, color="black", zorder=4,
+        )
+        text_objects.append((t, start, vad_stop, orig_text, wrap_dur))
+        prev_turn_end = turn_end
+
+    vad_legend: list = [mpatches.Patch(color="#66bb6a", alpha=0.6, label="vad active")]
+    if stt_interim_times:
+        import matplotlib.lines as _mlines  # type: ignore[import-untyped]
+        vad_legend.append(_mlines.Line2D([], [], color="#aaaaaa", linewidth=0.9, alpha=0.85, label="stt_interim"))
+    if turn_ends:
+        vad_legend.append(mpatches.Patch(color="#2e7d32", alpha=0.9, label="user_turn_end"))
+    if tp_times:
+        vad_legend += [
+            mpatches.Patch(color="#81c784", label="turn_prob (incomplete)"),
+            mpatches.Patch(color="#e57373", label="turn_prob (complete)"),
+        ]
+    if transcript_turns:
+        vad_legend.append(mpatches.Patch(color="black", label="transcript"))
+    ax_vad.legend(handles=vad_legend, fontsize=8, loc="upper right")
+
+    # =========================================================================
+    # Panel 2 — LLM + Bot speech
+    # =========================================================================
+
+    # Both LLM and bot-speaking spans sit on the same y band [0, 1].
+    # Text is placed inside the bot-speaking boxes (y centred at 0.5).
+    BOT_Y_BOTTOM = -0.05
+    BOT_Y_TOP = 1.55
+    TTS_LINE_Y = 1.30
+
+    # Normalised ymin/ymax for axvspan (axes fraction) — fill most of the axis
+    BOT_SPAN_YMIN = 0.05
+    BOT_SPAN_YMAX = 0.75  # leave headroom for TTS line
+    BOT_TEXT_Y = 0.5   # data coords — centre of the bar
+
+    # ylim set after tight_layout (see end of function)
+
+    # LLM token events — thin vertical lines
+    for t_tok in llm_token_times:
+        ax_bot.axvline(t_tok, ymin=BOT_SPAN_YMIN, ymax=BOT_SPAN_YMAX,
+                       color="#ffb74d", linewidth=0.6, alpha=0.6, zorder=1)
+    # LLM start events — solid orange line
+    for t_s in llm_starts:
+        ax_bot.axvline(t_s, ymin=BOT_SPAN_YMIN, ymax=BOT_SPAN_YMAX,
+                       color="#e65100", linewidth=1.5, alpha=0.9, zorder=2)
+    # LLM stop events — dashed orange line
+    for t_s in llm_stops:
+        ax_bot.axvline(t_s, ymin=BOT_SPAN_YMIN, ymax=BOT_SPAN_YMAX,
+                       color="#e65100", linewidth=1.5, linestyle="--", alpha=0.9, zorder=2)
+
+    # Bot speaking spans (teal) — drawn on top of LLM lines
+    for start, end in bot_spans:
+        ax_bot.axvspan(start, end, ymin=BOT_SPAN_YMIN, ymax=BOT_SPAN_YMAX,
+                       color="#4dd0e1", alpha=0.55, zorder=2)
+
+    # TTS spans — thick colored lines above the bot-speaking fill
+    for i, bar in enumerate(tts_bars):
+        color = cmap(i % 10)
+        ax_bot.plot([bar["start_s"], bar["end_s"]], [TTS_LINE_Y, TTS_LINE_Y],
+                    color=color, linewidth=6, alpha=0.75, solid_capstyle="butt", zorder=3)
+        if bar["first_audio_s"] is not None:
+            ax_bot.plot(bar["first_audio_s"], TTS_LINE_Y, marker="|", color="black",
+                        markersize=12, markeredgewidth=2.5, zorder=4)
+
+    ax_bot.set_yticks([])
+    ax_bot.set_ylabel("Bot activity", fontsize=10)
+    ax_bot.set_xlabel("Time (s)", fontsize=10)
+    ax_bot.grid(axis="x", linestyle=":", alpha=0.4)
+
+    # Bot utterance text — left-aligned to the start of the bot-speaking span
+    bot_text_objects: list[tuple] = []
+    for start, end, orig_text in bot_utterances:
+        wrap_dur = _prev_bot_duration(start, end - start)
+        t = ax_bot.text(
+            start + TEXT_MARGIN_S, BOT_TEXT_Y, "",
+            fontsize=8, va="center", ha="left",
+            clip_on=True, color="black", zorder=4,
+        )
+        bot_text_objects.append((t, start, end, orig_text, wrap_dur))
+
+    import matplotlib.lines as mlines  # type: ignore[import-untyped]
+    bot_legend = [
+        mlines.Line2D([], [], color="#ffb74d", linewidth=0.8, alpha=0.8, label="LLM token"),
+        mlines.Line2D([], [], color="#e65100", linewidth=1.5, label="LLM start"),
+        mlines.Line2D([], [], color="#e65100", linewidth=1.5, linestyle="--", label="LLM stop"),
+        mpatches.Patch(color="#4dd0e1", alpha=0.65, label="bot speaking"),
+    ]
+    if tts_bars:
+        bot_legend.append(mpatches.Patch(color="#888888", alpha=0.75, label="tts span"))
+    if any(b["first_audio_s"] is not None for b in tts_bars):
+        bot_legend.append(
+            mlines.Line2D([], [], marker="|", color="black", linestyle="none",
+                          markersize=9, markeredgewidth=2.0, label="tts_first_audio")
+        )
+    ax_bot.legend(handles=bot_legend, fontsize=8, loc="upper right")
+
+    # =========================================================================
+    # Dynamic text wrapping (both panels share the same x geometry)
+    # =========================================================================
+    # Track the axes-width (px) used for the last wrap so any change triggers
+    # a recompute, including Windows 11 snap/maximise which may skip resize_event.
+    _state: dict = {"last_ax_px": -1.0, "updating": False}
+
+    def _ax_width_px() -> float:
+        return fig.get_figwidth() * fig.dpi * ax_vad.get_position().width
+
+    def _char_px(fontsize: float) -> float:
+        return fontsize * 0.60 * (fig.dpi / 72.0)
+
+    def _update_wrapping(event=None) -> None:
+        if _state["updating"]:
+            return
+        ax_px = _ax_width_px()
+        if ax_px <= 1 or ax_px == _state["last_ax_px"]:
+            return
+        _state["updating"] = True
+        x_min, x_max = ax_vad.get_xlim()
+        px_per_data = ax_px / (x_max - x_min)
+        char_px = _char_px(8)
+        for t, start, end, orig_text, wrap_dur in text_objects:
+            span_px = wrap_dur * px_per_data
+            chars_per_line = max(8, int(3 * span_px / char_px))
+            t.set_text(textwrap.fill(orig_text, width=chars_per_line))
+        for t, start, end, orig_text, wrap_dur in bot_text_objects:
+            span_px = wrap_dur * px_per_data
+            chars_per_line = max(8, int(1 * span_px / char_px))
+            t.set_text(textwrap.fill(orig_text, width=chars_per_line))
+        _state["last_ax_px"] = ax_px
+        _state["updating"] = False
+        fig.canvas.draw_idle()
+
+    fig.canvas.mpl_connect("draw_event", _update_wrapping)
+    fig.canvas.mpl_connect("resize_event", lambda e: _update_wrapping())
+    try:
+        # configure_event fires on Windows when the window is snapped/maximised
+        fig.canvas.mpl_connect("configure_event", lambda e: _update_wrapping())
+    except Exception:
+        pass
+
+    fig.suptitle(title, fontsize=11)
+    plt.tight_layout()
+
+    # Set ylims after tight_layout so twinx cannot reset them
+    ax_vad.set_ylim(Y_BOTTOM, Y_TOP)
+    ax_tp.set_ylim(Y_BOTTOM, Y_TOP)
+    ax_bot.set_ylim(BOT_Y_BOTTOM, BOT_Y_TOP)
+
+    _update_wrapping()
+    if save_path:
+        fig.savefig(save_path, dpi=150, bbox_inches="tight")
+        print(f"Saved plot to {save_path}")
     else:
-        ax_tp.text(
-            0.5, 0.5, "No turn_probability events",
-            ha="center", va="center", transform=ax_tp.transAxes, fontsize=9,
-        )
-
-    ax_tp.set_ylabel("Turn probability", fontsize=9)
-    ax_tp.set_ylim(-0.05, 1.05)
-    ax_tp.grid(axis="x", linestyle=":", alpha=0.4)
-
-    # ---- Subplot 4: transcripts -----------------------------------------
-    ax_text = axes[3]
-    user_turns, bot_turns = build_transcript_series(events)
-
-    # Bars are static — draw once
-    rng = np.random.default_rng(42)
-    user_jitters = rng.uniform(-0.12, 0.12, size=max(len(user_turns), 1)).tolist()
-    bot_jitters = rng.uniform(-0.12, 0.12, size=max(len(bot_turns), 1)).tolist()
-
-    for i, turn in enumerate(user_turns):
-        width = max(turn["end_s"] - turn["start_s"], 0.1)
-        ax_text.barh(1 + user_jitters[i], width, left=turn["start_s"], height=0.5, color="#81c784", alpha=0.4)
-
-    for i, turn in enumerate(bot_turns):
-        width = max(turn["end_s"] - turn["start_s"], 0.1)
-        ax_text.barh(0 + bot_jitters[i], width, left=turn["start_s"], height=0.5, color="#e57373", alpha=0.4)
-
-    ax_text.set_yticks([0, 1])
-    ax_text.set_yticklabels(["bot", "user"], fontsize=8)
-    ax_text.set_ylabel("Transcript", fontsize=9)
-    ax_text.set_ylim(-0.6, 1.8)
-    ax_text.set_xlabel("Time (s)", fontsize=9)
-    ax_text.grid(axis="x", linestyle=":", alpha=0.4)
-
-    # Text labels are redrawn on resize so wrapping adapts to the figure width
-    transcript_texts: list = []
-
-    def _redraw_transcript_labels() -> None:
-        for txt in transcript_texts:
-            txt.remove()
-        transcript_texts.clear()
-
-        try:
-            ax_px = ax_text.get_window_extent().width
-        except Exception:
-            ax_px = 0
-
-        xlim = ax_text.get_xlim()
-        data_range = (xlim[1] - xlim[0]) or 1.0
-        # Approximate: fontsize 6.5 pt ≈ 0.55 px per character (screen DPI)
-        chars_per_unit = (ax_px / data_range) / (6.5 * 0.55) if ax_px > 0 else 120.0 / t_max
-
-        for i, turn in enumerate(user_turns):
-            w = max(turn["end_s"] - turn["start_s"], 0.1)
-            transcript_texts.append(ax_text.text(
-                turn["start_s"] + w / 2, 1 + user_jitters[i],
-                textwrap.fill(turn["text"], width=max(5, int(w * chars_per_unit * 0.75))),
-                ha="center", va="center", fontsize=6.5, clip_on=True,
-            ))
-
-        for i, turn in enumerate(bot_turns):
-            w = max(turn["end_s"] - turn["start_s"], 0.1)
-            transcript_texts.append(ax_text.text(
-                turn["start_s"] + w / 2, 0 + bot_jitters[i],
-                textwrap.fill(turn["text"], width=max(5, int(w * chars_per_unit*0.75))),
-                ha="center", va="center", fontsize=6.5, clip_on=True,
-            ))
-
-        if not user_turns and not bot_turns:
-            transcript_texts.append(ax_text.text(
-                0.5, 0.5, "No transcript events (run bot again to capture)",
-                ha="center", va="center", transform=ax_text.transAxes, fontsize=9,
-            ))
-
-    _redraw_transcript_labels()
-
-    if not save_path:
-        fig.canvas.mpl_connect(
-            "resize_event",
-            lambda _e: (_redraw_transcript_labels(), fig.canvas.draw_idle()),
-        )
-
-        # ---- Title & layout --------------------------------------------------
-        fig.suptitle(title, fontsize=11, y=1.01)
-        plt.tight_layout()
-
-        if save_path:
-            fig.savefig(save_path, dpi=150, bbox_inches="tight")
-            print(f"Saved plot to {save_path}")
-        else:
-            plt.show()
+        plt.show()
 
 
 # ---------------------------------------------------------------------------
-# Entry point
+# Entry point  (identical argument parsing to plot_session.py)
 # ---------------------------------------------------------------------------
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Plot a pipecat session JSONL log.")
+    parser = argparse.ArgumentParser(description="Plot VAD/Turn panel from a pipecat session JSONL log.")
     parser.add_argument("logfile", nargs="?", default=None, help="Path to the session .jsonl file")
     parser.add_argument("--save", metavar="PATH", help="Save plot to file instead of displaying")
     args = parser.parse_args()
 
-# if logfile is None, interpret it as 0, meaning "the most recent log file in logs/". Likewise, interpret -1 as the next most recent, and so on. This allows quick plotting of the latest session without needing to copy-paste the filename.
     if args.logfile is None:
-        log_idx = 0
+        log_idx: int | None = 0
     elif args.logfile.lstrip("-").isdigit():
         log_idx = -int(args.logfile)
-    else: 
+    else:
         path = Path(args.logfile)
         log_idx = None
-      
+
     if log_idx is not None:
         log_dir = Path("logs")
         if not log_dir.exists() or not log_dir.is_dir():
-            print(f"ERROR: logs/ directory not found in current path", file=sys.stderr)
+            print("ERROR: logs/ directory not found in current path", file=sys.stderr)
             sys.exit(1)
-        log_files = sorted(log_dir.glob("session_*.jsonl"), key=lambda p: p.stat().st_mtime, reverse=True)
+        log_files = sorted(
+            log_dir.glob("session_*.jsonl"),
+            key=lambda p: p.stat().st_mtime,
+            reverse=True,
+        )
         if not log_files:
-            print(f"ERROR: no session_*.jsonl files found in logs/", file=sys.stderr)
+            print("ERROR: no session_*.jsonl files found in logs/", file=sys.stderr)
             sys.exit(1)
         path = log_files[log_idx]
 
-        
     if not path.exists():
         print(f"ERROR: file not found: {path}", file=sys.stderr)
         sys.exit(1)
 
     events, report = load_events(path)
     print_quality_report(report, path)
-
-    title = f"Session: {path.stem}"
-    plot(events, title=title, save_path=args.save)
+    plot(events, title=f"Session: {path.stem}", save_path=args.save)
 
 
 if __name__ == "__main__":

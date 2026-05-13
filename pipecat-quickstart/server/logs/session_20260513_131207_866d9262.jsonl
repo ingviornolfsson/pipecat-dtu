@@ -1,0 +1,377 @@
+{"ts_ns": 0, "event": "pipeline_started", "wall_clock_unix_ns": 1778670727971007300, "session_id": "866d9262"}
+{"ts_ns": 516000000, "event": "llm_started"}
+{"ts_ns": 2985000000, "event": "llm_token", "text": "I"}
+{"ts_ns": 2985000000, "event": "llm_token", "text": "\u2019m"}
+{"ts_ns": 3063000000, "event": "llm_token", "text": " an"}
+{"ts_ns": 3063000000, "event": "llm_token", "text": " AI"}
+{"ts_ns": 3063000000, "event": "llm_token", "text": " designed"}
+{"ts_ns": 3079000000, "event": "llm_token", "text": " to"}
+{"ts_ns": 3094000000, "event": "llm_token", "text": " assist"}
+{"ts_ns": 3094000000, "event": "llm_token", "text": " you"}
+{"ts_ns": 3125000000, "event": "llm_token", "text": " with"}
+{"ts_ns": 3125000000, "event": "llm_token", "text": " information"}
+{"ts_ns": 3157000000, "event": "llm_token", "text": ","}
+{"ts_ns": 3157000000, "event": "llm_token", "text": " answer"}
+{"ts_ns": 3204000000, "event": "llm_token", "text": " questions"}
+{"ts_ns": 3204000000, "event": "llm_token", "text": ","}
+{"ts_ns": 3235000000, "event": "llm_token", "text": " and"}
+{"ts_ns": 3235000000, "event": "llm_token", "text": " have"}
+{"ts_ns": 3250000000, "event": "llm_token", "text": " interesting"}
+{"ts_ns": 3250000000, "event": "llm_token", "text": " conversations"}
+{"ts_ns": 3282000000, "event": "llm_token", "text": "."}
+{"ts_ns": 3282000000, "event": "llm_token", "text": " How"}
+{"ts_ns": 3297000000, "event": "tts_started", "context_id": "98d6bff2-c769-4ed6-9f29-6d2afcace25e"}
+{"ts_ns": 3313000000, "event": "llm_token", "text": " can"}
+{"ts_ns": 3313000000, "event": "llm_token", "text": " I"}
+{"ts_ns": 3329000000, "event": "llm_token", "text": " help"}
+{"ts_ns": 3329000000, "event": "llm_token", "text": " you"}
+{"ts_ns": 3344000000, "event": "llm_token", "text": " today"}
+{"ts_ns": 3344000000, "event": "llm_token", "text": "?"}
+{"ts_ns": 3360000000, "event": "llm_stopped"}
+{"ts_ns": 3407000000, "event": "tts_first_audio", "context_id": "98d6bff2-c769-4ed6-9f29-6d2afcace25e"}
+{"ts_ns": 3407000000, "event": "bot_speaking_started"}
+{"ts_ns": 4750000000, "event": "tts_stopped", "context_id": "98d6bff2-c769-4ed6-9f29-6d2afcace25e"}
+{"ts_ns": 4750000000, "event": "llm_stopped"}
+{"ts_ns": 9860000000, "event": "bot_speaking_stopped"}
+{"ts_ns": 11625000000, "event": "vad_started"}
+{"ts_ns": 11625000000, "event": "interruption"}
+{"ts_ns": 11860000000, "event": "vad_stopped"}
+{"ts_ns": 11891000000, "event": "turn_probability", "probability": 0.6701734066009521, "is_complete": true, "e2e_ms": 196.69799999974202, "source": "periodic"}
+{"ts_ns": 11907000000, "event": "stt_interim", "text": "Hi."}
+{"ts_ns": 12047000000, "event": "stt_final", "text": "Hi."}
+{"ts_ns": 12078000000, "event": "turn_probability", "probability": 0.6614095568656921, "is_complete": true, "e2e_ms": 193.71540000429377, "source": "periodic"}
+{"ts_ns": 12313000000, "event": "turn_probability", "probability": 0.6614095568656921, "is_complete": true, "e2e_ms": 163.95400000328664}
+{"ts_ns": 12313000000, "event": "vad_started"}
+{"ts_ns": 12516000000, "event": "turn_probability", "probability": 0.4509245455265045, "is_complete": false, "e2e_ms": 164.3764999898849, "source": "periodic"}
+{"ts_ns": 12703000000, "event": "turn_probability", "probability": 0.643550455570221, "is_complete": true, "e2e_ms": 167.9115000006277, "source": "periodic"}
+{"ts_ns": 12859000000, "event": "turn_probability", "probability": 0.9619386196136475, "is_complete": true, "e2e_ms": 105.31559999799356, "source": "periodic"}
+{"ts_ns": 13032000000, "event": "stt_interim", "text": "You tell me what the weather"}
+{"ts_ns": 13141000000, "event": "turn_probability", "probability": 0.8817123174667358, "is_complete": true, "e2e_ms": 168.07029998744838, "source": "periodic"}
+{"ts_ns": 13328000000, "event": "turn_probability", "probability": 0.7357640266418457, "is_complete": true, "e2e_ms": 151.62609999242704, "source": "periodic"}
+{"ts_ns": 13578000000, "event": "turn_probability", "probability": 0.05143404006958008, "is_complete": false, "e2e_ms": 186.35139999969397, "source": "periodic"}
+{"ts_ns": 13610000000, "event": "vad_stopped"}
+{"ts_ns": 13719000000, "event": "turn_probability", "probability": 0.9557313919067383, "is_complete": true, "e2e_ms": 128.0008000030648, "source": "periodic"}
+{"ts_ns": 13782000000, "event": "turn_probability", "probability": 0.9522762298583984, "is_complete": true, "e2e_ms": 81.86340000247583}
+{"ts_ns": 13829000000, "event": "stt_final", "text": "You tell me what the weather is like?"}
+{"ts_ns": 13829000000, "event": "user_turn_end"}
+{"ts_ns": 13829000000, "event": "llm_started"}
+{"ts_ns": 13844000000, "event": "vad_started"}
+{"ts_ns": 13844000000, "event": "interruption"}
+{"ts_ns": 13860000000, "event": "llm_stopped"}
+{"ts_ns": 14063000000, "event": "turn_probability", "probability": 0.7857974767684937, "is_complete": true, "e2e_ms": 166.16039999644272, "source": "periodic"}
+{"ts_ns": 14250000000, "event": "turn_probability", "probability": 0.1829163134098053, "is_complete": false, "e2e_ms": 142.3903000104474, "source": "periodic"}
+{"ts_ns": 14438000000, "event": "turn_probability", "probability": 0.024070680141448975, "is_complete": false, "e2e_ms": 117.43990000104532, "source": "periodic"}
+{"ts_ns": 14625000000, "event": "turn_probability", "probability": 0.9573681354522705, "is_complete": true, "e2e_ms": 100.91069999907631, "source": "periodic"}
+{"ts_ns": 14672000000, "event": "vad_stopped"}
+{"ts_ns": 14782000000, "event": "turn_probability", "probability": 0.8934911489486694, "is_complete": true, "e2e_ms": 110.68410000007134}
+{"ts_ns": 14782000000, "event": "stt_interim", "text": "In Turkey?"}
+{"ts_ns": 14907000000, "event": "stt_final", "text": "Turkey?"}
+{"ts_ns": 14907000000, "event": "user_turn_end"}
+{"ts_ns": 14907000000, "event": "llm_started"}
+{"ts_ns": 15766000000, "event": "llm_token", "text": "I"}
+{"ts_ns": 15766000000, "event": "llm_token", "text": " can"}
+{"ts_ns": 15829000000, "event": "llm_token", "text": "\u2019t"}
+{"ts_ns": 15829000000, "event": "llm_token", "text": " provide"}
+{"ts_ns": 15891000000, "event": "llm_token", "text": " real"}
+{"ts_ns": 15891000000, "event": "llm_token", "text": "-time"}
+{"ts_ns": 15907000000, "event": "llm_token", "text": " weather"}
+{"ts_ns": 15907000000, "event": "llm_token", "text": " updates"}
+{"ts_ns": 15954000000, "event": "llm_token", "text": ","}
+{"ts_ns": 15954000000, "event": "llm_token", "text": " but"}
+{"ts_ns": 16032000000, "event": "llm_token", "text": " you"}
+{"ts_ns": 16032000000, "event": "llm_token", "text": " can"}
+{"ts_ns": 16188000000, "event": "llm_token", "text": " check"}
+{"ts_ns": 16188000000, "event": "llm_token", "text": " a"}
+{"ts_ns": 16282000000, "event": "llm_token", "text": " weather"}
+{"ts_ns": 16282000000, "event": "llm_token", "text": " app"}
+{"ts_ns": 16282000000, "event": "llm_token", "text": " or"}
+{"ts_ns": 16282000000, "event": "llm_token", "text": " website"}
+{"ts_ns": 16297000000, "event": "llm_token", "text": " for"}
+{"ts_ns": 16297000000, "event": "llm_token", "text": " the"}
+{"ts_ns": 16313000000, "event": "llm_token", "text": " latest"}
+{"ts_ns": 16313000000, "event": "llm_token", "text": " conditions"}
+{"ts_ns": 16329000000, "event": "llm_token", "text": " in"}
+{"ts_ns": 16329000000, "event": "llm_token", "text": " Turkey"}
+{"ts_ns": 16360000000, "event": "llm_token", "text": "."}
+{"ts_ns": 16360000000, "event": "llm_token", "text": " Would"}
+{"ts_ns": 16360000000, "event": "tts_started", "context_id": "819f4ef6-5210-4418-93b3-e4ef4505875b"}
+{"ts_ns": 16391000000, "event": "llm_token", "text": " you"}
+{"ts_ns": 16391000000, "event": "llm_token", "text": " like"}
+{"ts_ns": 16407000000, "event": "llm_token", "text": " to"}
+{"ts_ns": 16407000000, "event": "llm_token", "text": " know"}
+{"ts_ns": 16438000000, "event": "llm_token", "text": " about"}
+{"ts_ns": 16438000000, "event": "llm_token", "text": " the"}
+{"ts_ns": 16469000000, "event": "llm_token", "text": " typical"}
+{"ts_ns": 16469000000, "event": "llm_token", "text": " weather"}
+{"ts_ns": 16469000000, "event": "llm_token", "text": " there"}
+{"ts_ns": 16469000000, "event": "llm_token", "text": "?"}
+{"ts_ns": 16485000000, "event": "tts_first_audio", "context_id": "819f4ef6-5210-4418-93b3-e4ef4505875b"}
+{"ts_ns": 16485000000, "event": "bot_speaking_started"}
+{"ts_ns": 16500000000, "event": "llm_stopped"}
+{"ts_ns": 17922000000, "event": "tts_stopped", "context_id": "819f4ef6-5210-4418-93b3-e4ef4505875b"}
+{"ts_ns": 17922000000, "event": "llm_stopped"}
+{"ts_ns": 23500000000, "event": "bot_speaking_stopped"}
+{"ts_ns": 24969000000, "event": "vad_started"}
+{"ts_ns": 24969000000, "event": "interruption"}
+{"ts_ns": 25125000000, "event": "turn_probability", "probability": 0.1142410933971405, "is_complete": false, "e2e_ms": 114.65429999225307, "source": "periodic"}
+{"ts_ns": 25235000000, "event": "stt_interim", "text": "Yes."}
+{"ts_ns": 25313000000, "event": "turn_probability", "probability": 0.5196834206581116, "is_complete": true, "e2e_ms": 110.00610000337474, "source": "periodic"}
+{"ts_ns": 25516000000, "event": "turn_probability", "probability": 0.4509245455265045, "is_complete": false, "e2e_ms": 93.13389999442734, "source": "periodic"}
+{"ts_ns": 25704000000, "event": "vad_stopped"}
+{"ts_ns": 25766000000, "event": "turn_probability", "probability": 0.9042243957519531, "is_complete": true, "e2e_ms": 154.03900000092108, "source": "periodic"}
+{"ts_ns": 25907000000, "event": "turn_probability", "probability": 0.8688222169876099, "is_complete": true, "e2e_ms": 121.2847000133479}
+{"ts_ns": 25954000000, "event": "stt_final", "text": "Yes. Please tell me."}
+{"ts_ns": 25954000000, "event": "user_turn_end"}
+{"ts_ns": 25954000000, "event": "llm_started"}
+{"ts_ns": 26438000000, "event": "stt_final", "text": "About that."}
+{"ts_ns": 26438000000, "event": "interruption"}
+{"ts_ns": 26438000000, "event": "llm_stopped"}
+{"ts_ns": 26579000000, "event": "user_turn_end"}
+{"ts_ns": 26579000000, "event": "llm_started"}
+{"ts_ns": 28813000000, "event": "llm_token", "text": "Turkey"}
+{"ts_ns": 28813000000, "event": "llm_token", "text": "'s"}
+{"ts_ns": 28860000000, "event": "llm_token", "text": " weather"}
+{"ts_ns": 28860000000, "event": "llm_token", "text": " varies"}
+{"ts_ns": 28891000000, "event": "llm_token", "text": " widely"}
+{"ts_ns": 28891000000, "event": "llm_token", "text": "."}
+{"ts_ns": 28938000000, "event": "llm_token", "text": " In"}
+{"ts_ns": 28938000000, "event": "llm_token", "text": " the"}
+{"ts_ns": 28954000000, "event": "tts_started", "context_id": "519a2866-a9e6-4c48-917f-36539a106792"}
+{"ts_ns": 29000000000, "event": "llm_token", "text": " coastal"}
+{"ts_ns": 29000000000, "event": "llm_token", "text": " areas"}
+{"ts_ns": 29047000000, "event": "tts_first_audio", "context_id": "519a2866-a9e6-4c48-917f-36539a106792"}
+{"ts_ns": 29047000000, "event": "bot_speaking_started"}
+{"ts_ns": 29063000000, "event": "llm_token", "text": ","}
+{"ts_ns": 29063000000, "event": "llm_token", "text": " like"}
+{"ts_ns": 29157000000, "event": "llm_token", "text": " Antalya"}
+{"ts_ns": 29157000000, "event": "llm_token", "text": ","}
+{"ts_ns": 29219000000, "event": "llm_token", "text": " summers"}
+{"ts_ns": 29219000000, "event": "llm_token", "text": " are"}
+{"ts_ns": 29282000000, "event": "llm_token", "text": " hot"}
+{"ts_ns": 29282000000, "event": "llm_token", "text": " and"}
+{"ts_ns": 29344000000, "event": "llm_token", "text": " dry"}
+{"ts_ns": 29344000000, "event": "llm_token", "text": ","}
+{"ts_ns": 29407000000, "event": "llm_token", "text": " while"}
+{"ts_ns": 29407000000, "event": "llm_token", "text": " winters"}
+{"ts_ns": 29516000000, "event": "llm_token", "text": " are"}
+{"ts_ns": 29516000000, "event": "llm_token", "text": " mild"}
+{"ts_ns": 29579000000, "event": "llm_token", "text": "."}
+{"ts_ns": 29579000000, "event": "llm_token", "text": " Central"}
+{"ts_ns": 29594000000, "event": "llm_token", "text": " Turkey"}
+{"ts_ns": 29594000000, "event": "llm_token", "text": ","}
+{"ts_ns": 29625000000, "event": "llm_token", "text": " like"}
+{"ts_ns": 29625000000, "event": "llm_token", "text": " Ankara"}
+{"ts_ns": 29657000000, "event": "llm_token", "text": ","}
+{"ts_ns": 29657000000, "event": "llm_token", "text": " has"}
+{"ts_ns": 29688000000, "event": "llm_token", "text": " cold"}
+{"ts_ns": 29688000000, "event": "llm_token", "text": " winters"}
+{"ts_ns": 29750000000, "event": "llm_token", "text": " and"}
+{"ts_ns": 29750000000, "event": "llm_token", "text": " hot"}
+{"ts_ns": 29782000000, "event": "llm_token", "text": " summers"}
+{"ts_ns": 29782000000, "event": "llm_token", "text": "."}
+{"ts_ns": 29829000000, "event": "llm_token", "text": " The"}
+{"ts_ns": 29829000000, "event": "llm_token", "text": " Black"}
+{"ts_ns": 29860000000, "event": "llm_token", "text": " Sea"}
+{"ts_ns": 29860000000, "event": "llm_token", "text": " region"}
+{"ts_ns": 29907000000, "event": "llm_token", "text": " is"}
+{"ts_ns": 29907000000, "event": "llm_token", "text": " humid"}
+{"ts_ns": 29938000000, "event": "llm_token", "text": " and"}
+{"ts_ns": 29954000000, "event": "llm_token", "text": " rainy"}
+{"ts_ns": 29969000000, "event": "llm_token", "text": "."}
+{"ts_ns": 29969000000, "event": "llm_token", "text": " Is"}
+{"ts_ns": 30016000000, "event": "llm_token", "text": " there"}
+{"ts_ns": 30016000000, "event": "llm_token", "text": " a"}
+{"ts_ns": 30063000000, "event": "llm_token", "text": " specific"}
+{"ts_ns": 30063000000, "event": "llm_token", "text": " area"}
+{"ts_ns": 30094000000, "event": "llm_token", "text": " or"}
+{"ts_ns": 30094000000, "event": "llm_token", "text": " season"}
+{"ts_ns": 30141000000, "event": "llm_token", "text": " you're"}
+{"ts_ns": 30141000000, "event": "llm_token", "text": " curious"}
+{"ts_ns": 30141000000, "event": "llm_token", "text": " about"}
+{"ts_ns": 30157000000, "event": "llm_token", "text": "?"}
+{"ts_ns": 30172000000, "event": "llm_stopped"}
+{"ts_ns": 32641000000, "event": "tts_stopped", "context_id": "519a2866-a9e6-4c48-917f-36539a106792"}
+{"ts_ns": 32641000000, "event": "llm_stopped"}
+{"ts_ns": 35797000000, "event": "vad_started"}
+{"ts_ns": 35797000000, "event": "interruption"}
+{"ts_ns": 35813000000, "event": "bot_speaking_stopped"}
+{"ts_ns": 35953000000, "event": "turn_probability", "probability": 0.6614095568656921, "is_complete": true, "e2e_ms": 129.0646999987075, "source": "periodic"}
+{"ts_ns": 36188000000, "event": "turn_probability", "probability": 0.6701734066009521, "is_complete": true, "e2e_ms": 133.81379999918863, "source": "periodic"}
+{"ts_ns": 36204000000, "event": "stt_interim", "text": "Actually,"}
+{"ts_ns": 36375000000, "event": "turn_probability", "probability": 0.8111233115196228, "is_complete": true, "e2e_ms": 115.76819999027066, "source": "periodic"}
+{"ts_ns": 36531000000, "event": "turn_probability", "probability": 0.8050150871276855, "is_complete": true, "e2e_ms": 99.27560000505764, "source": "periodic"}
+{"ts_ns": 36891000000, "event": "turn_probability", "probability": 0.19498491287231445, "is_complete": false, "e2e_ms": 180.37679999542888, "source": "periodic"}
+{"ts_ns": 37031000000, "event": "turn_probability", "probability": 0.9697068929672241, "is_complete": true, "e2e_ms": 136.49740000255406, "source": "periodic"}
+{"ts_ns": 37204000000, "event": "stt_interim", "text": "Actually, I would rather like to"}
+{"ts_ns": 37219000000, "event": "turn_probability", "probability": 0.5684942007064819, "is_complete": true, "e2e_ms": 122.18720000237226, "source": "periodic"}
+{"ts_ns": 37453000000, "event": "turn_probability", "probability": 0.9403132200241089, "is_complete": true, "e2e_ms": 170.20480000064708, "source": "periodic"}
+{"ts_ns": 37656000000, "event": "turn_probability", "probability": 0.7580885291099548, "is_complete": true, "e2e_ms": 118.94849999225698, "source": "periodic"}
+{"ts_ns": 37891000000, "event": "turn_probability", "probability": 0.7722399234771729, "is_complete": true, "e2e_ms": 165.84230000444222, "source": "periodic"}
+{"ts_ns": 37922000000, "event": "vad_stopped"}
+{"ts_ns": 38032000000, "event": "turn_probability", "probability": 0.9719371795654297, "is_complete": true, "e2e_ms": 105.59240001020953}
+{"ts_ns": 38079000000, "event": "stt_final", "text": "Actually, I would rather like to talk about"}
+{"ts_ns": 38172000000, "event": "user_turn_end"}
+{"ts_ns": 38172000000, "event": "llm_started"}
+{"ts_ns": 38782000000, "event": "vad_started"}
+{"ts_ns": 38782000000, "event": "interruption"}
+{"ts_ns": 38782000000, "event": "llm_stopped"}
+{"ts_ns": 39016000000, "event": "turn_probability", "probability": 0.6252830028533936, "is_complete": true, "e2e_ms": 211.4212000014959, "source": "periodic"}
+{"ts_ns": 39109000000, "event": "turn_probability", "probability": 0.6252830028533936, "is_complete": true, "e2e_ms": 96.09750000527129, "source": "periodic"}
+{"ts_ns": 39125000000, "event": "stt_interim", "text": "what to do in"}
+{"ts_ns": 39344000000, "event": "stt_final", "text": "what to do in"}
+{"ts_ns": 39344000000, "event": "turn_probability", "probability": 0.8732463121414185, "is_complete": true, "e2e_ms": 118.98820000351407, "source": "periodic"}
+{"ts_ns": 39469000000, "event": "vad_stopped"}
+{"ts_ns": 39578000000, "event": "turn_probability", "probability": 0.9777120351791382, "is_complete": true, "e2e_ms": 115.59150001266971, "source": "periodic"}
+{"ts_ns": 39719000000, "event": "turn_probability", "probability": 0.95045405626297, "is_complete": true, "e2e_ms": 146.15809998940676}
+{"ts_ns": 39829000000, "event": "user_turn_end"}
+{"ts_ns": 39829000000, "event": "llm_started"}
+{"ts_ns": 41297000000, "event": "llm_token", "text": "Are"}
+{"ts_ns": 41297000000, "event": "llm_token", "text": " you"}
+{"ts_ns": 41344000000, "event": "llm_token", "text": " looking"}
+{"ts_ns": 41344000000, "event": "llm_token", "text": " for"}
+{"ts_ns": 41391000000, "event": "llm_token", "text": " activities"}
+{"ts_ns": 41391000000, "event": "llm_token", "text": " in"}
+{"ts_ns": 41422000000, "event": "llm_token", "text": " a"}
+{"ts_ns": 41422000000, "event": "llm_token", "text": " specific"}
+{"ts_ns": 41469000000, "event": "llm_token", "text": " city"}
+{"ts_ns": 41469000000, "event": "llm_token", "text": " in"}
+{"ts_ns": 41500000000, "event": "llm_token", "text": " Turkey"}
+{"ts_ns": 41500000000, "event": "llm_token", "text": ","}
+{"ts_ns": 41547000000, "event": "llm_token", "text": " or"}
+{"ts_ns": 41547000000, "event": "llm_token", "text": " just"}
+{"ts_ns": 41579000000, "event": "llm_token", "text": " general"}
+{"ts_ns": 41579000000, "event": "llm_token", "text": " suggestions"}
+{"ts_ns": 41625000000, "event": "llm_token", "text": " for"}
+{"ts_ns": 41625000000, "event": "llm_token", "text": " the"}
+{"ts_ns": 41641000000, "event": "llm_token", "text": " country"}
+{"ts_ns": 41641000000, "event": "llm_token", "text": "?"}
+{"ts_ns": 41672000000, "event": "llm_stopped"}
+{"ts_ns": 41672000000, "event": "tts_started", "context_id": "41930b82-c5e3-45c5-a53e-cb440dee343e"}
+{"ts_ns": 41782000000, "event": "tts_first_audio", "context_id": "41930b82-c5e3-45c5-a53e-cb440dee343e"}
+{"ts_ns": 41782000000, "event": "bot_speaking_started"}
+{"ts_ns": 42766000000, "event": "tts_stopped", "context_id": "41930b82-c5e3-45c5-a53e-cb440dee343e"}
+{"ts_ns": 42766000000, "event": "llm_stopped"}
+{"ts_ns": 46625000000, "event": "bot_speaking_stopped"}
+{"ts_ns": 50829000000, "event": "stt_interim", "text": "So"}
+{"ts_ns": 50829000000, "event": "interruption"}
+{"ts_ns": 51766000000, "event": "stt_final", "text": "So"}
+{"ts_ns": 51907000000, "event": "user_turn_end"}
+{"ts_ns": 51907000000, "event": "llm_started"}
+{"ts_ns": 52672000000, "event": "llm_token", "text": "Feel"}
+{"ts_ns": 52672000000, "event": "llm_token", "text": " free"}
+{"ts_ns": 52719000000, "event": "llm_token", "text": " to"}
+{"ts_ns": 52719000000, "event": "llm_token", "text": " share"}
+{"ts_ns": 52766000000, "event": "llm_token", "text": " what"}
+{"ts_ns": 52766000000, "event": "llm_token", "text": " you"}
+{"ts_ns": 52797000000, "event": "llm_token", "text": " have"}
+{"ts_ns": 52797000000, "event": "llm_token", "text": " in"}
+{"ts_ns": 52844000000, "event": "llm_token", "text": " mind"}
+{"ts_ns": 52844000000, "event": "llm_token", "text": ","}
+{"ts_ns": 52891000000, "event": "llm_token", "text": " and"}
+{"ts_ns": 52891000000, "event": "llm_token", "text": " I"}
+{"ts_ns": 52985000000, "event": "llm_token", "text": " can"}
+{"ts_ns": 52985000000, "event": "llm_token", "text": " help"}
+{"ts_ns": 52985000000, "event": "llm_token", "text": " you"}
+{"ts_ns": 52985000000, "event": "llm_token", "text": " with"}
+{"ts_ns": 53032000000, "event": "llm_token", "text": " that"}
+{"ts_ns": 53032000000, "event": "llm_token", "text": "!"}
+{"ts_ns": 53047000000, "event": "llm_stopped"}
+{"ts_ns": 53063000000, "event": "tts_started", "context_id": "9b0b73e1-0ae1-4069-b0f8-9917ff6d22ca"}
+{"ts_ns": 53172000000, "event": "tts_first_audio", "context_id": "9b0b73e1-0ae1-4069-b0f8-9917ff6d22ca"}
+{"ts_ns": 53172000000, "event": "bot_speaking_started"}
+{"ts_ns": 53719000000, "event": "tts_stopped", "context_id": "9b0b73e1-0ae1-4069-b0f8-9917ff6d22ca"}
+{"ts_ns": 53719000000, "event": "llm_stopped"}
+{"ts_ns": 53750000000, "event": "stt_interim", "text": "I"}
+{"ts_ns": 53750000000, "event": "interruption"}
+{"ts_ns": 53750000000, "event": "bot_speaking_stopped"}
+{"ts_ns": 54188000000, "event": "stt_final", "text": "I'm"}
+{"ts_ns": 54329000000, "event": "user_turn_end"}
+{"ts_ns": 54329000000, "event": "llm_started"}
+{"ts_ns": 55219000000, "event": "stt_interim", "text": "thinking"}
+{"ts_ns": 55235000000, "event": "llm_token", "text": "It"}
+{"ts_ns": 55235000000, "event": "llm_token", "text": " seems"}
+{"ts_ns": 55235000000, "event": "interruption"}
+{"ts_ns": 55235000000, "event": "llm_stopped"}
+{"ts_ns": 55250000000, "event": "tts_started", "context_id": "6dbf116a-d970-4039-919c-ef7ba55e2db6"}
+{"ts_ns": 55438000000, "event": "stt_final", "text": "thinking"}
+{"ts_ns": 55579000000, "event": "user_turn_end"}
+{"ts_ns": 55579000000, "event": "llm_started"}
+{"ts_ns": 56016000000, "event": "llm_token", "text": "Take"}
+{"ts_ns": 56016000000, "event": "llm_token", "text": " your"}
+{"ts_ns": 56047000000, "event": "llm_token", "text": " time"}
+{"ts_ns": 56047000000, "event": "llm_token", "text": "!"}
+{"ts_ns": 56063000000, "event": "llm_token", "text": " Let"}
+{"ts_ns": 56063000000, "event": "llm_token", "text": " me"}
+{"ts_ns": 56063000000, "event": "tts_started", "context_id": "783c2df6-ab97-4006-a407-85b9cd5aa0d6"}
+{"ts_ns": 56188000000, "event": "llm_token", "text": " know"}
+{"ts_ns": 56188000000, "event": "llm_token", "text": " when"}
+{"ts_ns": 56204000000, "event": "tts_first_audio", "context_id": "783c2df6-ab97-4006-a407-85b9cd5aa0d6"}
+{"ts_ns": 56204000000, "event": "bot_speaking_started"}
+{"ts_ns": 56219000000, "event": "llm_token", "text": " you"}
+{"ts_ns": 56219000000, "event": "llm_token", "text": "\u2019re"}
+{"ts_ns": 56266000000, "event": "llm_token", "text": " ready"}
+{"ts_ns": 56266000000, "event": "llm_token", "text": " to"}
+{"ts_ns": 56329000000, "event": "llm_token", "text": " share"}
+{"ts_ns": 56329000000, "event": "llm_token", "text": " what"}
+{"ts_ns": 56360000000, "event": "vad_started"}
+{"ts_ns": 56360000000, "event": "interruption"}
+{"ts_ns": 56360000000, "event": "llm_stopped"}
+{"ts_ns": 56375000000, "event": "bot_speaking_stopped"}
+{"ts_ns": 56438000000, "event": "stt_interim", "text": "maybe"}
+{"ts_ns": 56563000000, "event": "turn_probability", "probability": 0.5684942007064819, "is_complete": true, "e2e_ms": 153.1430999893928, "source": "periodic"}
+{"ts_ns": 56703000000, "event": "turn_probability", "probability": 0.963354766368866, "is_complete": true, "e2e_ms": 109.52980000001844, "source": "periodic"}
+{"ts_ns": 56891000000, "event": "turn_probability", "probability": 0.1829163134098053, "is_complete": false, "e2e_ms": 78.02809998975135, "source": "periodic"}
+{"ts_ns": 57172000000, "event": "turn_probability", "probability": 0.06667384505271912, "is_complete": false, "e2e_ms": 144.6560999902431, "source": "periodic"}
+{"ts_ns": 57375000000, "event": "turn_probability", "probability": 0.7580885291099548, "is_complete": true, "e2e_ms": 116.80259999411646, "source": "periodic"}
+{"ts_ns": 57469000000, "event": "stt_interim", "text": "maybe I should"}
+{"ts_ns": 57563000000, "event": "vad_stopped"}
+{"ts_ns": 57656000000, "event": "turn_probability", "probability": 0.04596525430679321, "is_complete": false, "e2e_ms": 174.96600000595208, "source": "periodic"}
+{"ts_ns": 57766000000, "event": "stt_final", "text": "maybe I should"}
+{"ts_ns": 57829000000, "event": "turn_probability", "probability": 0.2719642221927643, "is_complete": false, "e2e_ms": 187.28519999422133}
+{"ts_ns": 58500000000, "event": "vad_started"}
+{"ts_ns": 58641000000, "event": "turn_probability", "probability": 0.01910117268562317, "is_complete": false, "e2e_ms": 103.586199998972, "source": "periodic"}
+{"ts_ns": 58782000000, "event": "stt_interim", "text": "not"}
+{"ts_ns": 58797000000, "event": "vad_stopped"}
+{"ts_ns": 58938000000, "event": "turn_probability", "probability": 0.06916707754135132, "is_complete": false, "e2e_ms": 176.54919999768026, "source": "periodic"}
+{"ts_ns": 59000000000, "event": "stt_final", "text": "not"}
+{"ts_ns": 59079000000, "event": "turn_probability", "probability": 0.05143404006958008, "is_complete": false, "e2e_ms": 152.60779998789076}
+{"ts_ns": 59094000000, "event": "vad_started"}
+{"ts_ns": 59313000000, "event": "turn_probability", "probability": 0.13117775321006775, "is_complete": false, "e2e_ms": 176.90429999493062, "source": "periodic"}
+{"ts_ns": 59407000000, "event": "stt_final", "text": "go"}
+{"ts_ns": 59453000000, "event": "turn_probability", "probability": 0.7790932655334473, "is_complete": true, "e2e_ms": 148.94620000268333, "source": "periodic"}
+{"ts_ns": 59641000000, "event": "vad_stopped"}
+{"ts_ns": 59688000000, "event": "turn_probability", "probability": 0.6788204908370972, "is_complete": true, "e2e_ms": 130.7571000070311, "source": "periodic"}
+{"ts_ns": 59750000000, "event": "turn_probability", "probability": 0.8857588768005371, "is_complete": true, "e2e_ms": 86.98320000257809}
+{"ts_ns": 59813000000, "event": "stt_final", "text": "Turkey."}
+{"ts_ns": 59829000000, "event": "user_turn_end"}
+{"ts_ns": 59829000000, "event": "llm_started"}
+{"ts_ns": 60360000000, "event": "llm_token", "text": "That"}
+{"ts_ns": 60360000000, "event": "llm_token", "text": "\u2019s"}
+{"ts_ns": 60391000000, "event": "llm_token", "text": " understandable"}
+{"ts_ns": 60391000000, "event": "llm_token", "text": "!"}
+{"ts_ns": 60422000000, "event": "llm_token", "text": " There"}
+{"ts_ns": 60422000000, "event": "llm_token", "text": " are"}
+{"ts_ns": 60438000000, "event": "tts_started", "context_id": "f893480e-dd7d-48cb-9320-dc2282e35d36"}
+{"ts_ns": 60454000000, "event": "llm_token", "text": " plenty"}
+{"ts_ns": 60454000000, "event": "llm_token", "text": " of"}
+{"ts_ns": 60500000000, "event": "llm_token", "text": " other"}
+{"ts_ns": 60500000000, "event": "llm_token", "text": " great"}
+{"ts_ns": 60532000000, "event": "llm_token", "text": " destinations"}
+{"ts_ns": 60532000000, "event": "llm_token", "text": " to"}
+{"ts_ns": 60547000000, "event": "tts_first_audio", "context_id": "f893480e-dd7d-48cb-9320-dc2282e35d36"}
+{"ts_ns": 60547000000, "event": "bot_speaking_started"}
+{"ts_ns": 60563000000, "event": "llm_token", "text": " consider"}
+{"ts_ns": 60563000000, "event": "llm_token", "text": "."}
+{"ts_ns": 60594000000, "event": "llm_token", "text": " What"}
+{"ts_ns": 60594000000, "event": "llm_token", "text": " are"}
+{"ts_ns": 60625000000, "event": "llm_token", "text": " you"}
+{"ts_ns": 60625000000, "event": "llm_token", "text": " looking"}
+{"ts_ns": 60657000000, "event": "llm_token", "text": " for"}
+{"ts_ns": 60657000000, "event": "llm_token", "text": " in"}
+{"ts_ns": 60704000000, "event": "llm_token", "text": " a"}
+{"ts_ns": 60704000000, "event": "llm_token", "text": " trip"}
+{"ts_ns": 60719000000, "event": "llm_token", "text": "?"}
+{"ts_ns": 60719000000, "event": "llm_stopped"}
+{"ts_ns": 61594000000, "event": "tts_stopped", "context_id": "f893480e-dd7d-48cb-9320-dc2282e35d36"}
+{"ts_ns": 61594000000, "event": "llm_stopped"}
+{"ts_ns": 65579000000, "event": "bot_speaking_stopped"}
