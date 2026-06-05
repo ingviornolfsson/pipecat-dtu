@@ -196,7 +196,7 @@ def build_bot_panel_data(
                 continue
             fa_time = ctx_first_audio.get(cid)
             if fa_time is not None:
-                match = min(bot_spans, key=lambda s: abs(s[0] - fa_time))
+                match = min(bot_spans, key=lambda s, t=fa_time: abs(s[0] - t))
                 if abs(match[0] - fa_time) < 0.5:
                     suffix = " ..." if _was_interrupted(match[1]) else ""
                     spoken_paired.append((match[0], match[1], text + suffix))
@@ -365,37 +365,29 @@ def plot(events: list[dict], title: str, save_path: str | None = None) -> None:
         ax_tp.scatter(tp_times, tp_probs, c=dot_colors, s=25, zorder=2)
         ax_tp.axhline(0.5, color="black", linestyle="--", linewidth=0.8, alpha=0.4)
 
-    # Helper: duration of the most recent bot-speaking span that ended before start_s.
-    # Used to size text boxes consistently with the preceding bot turn.
-    _bot_spans_sorted = sorted(bot_spans, key=lambda x: x[1])
-
-    def _prev_bot_duration(start_s: float, fallback: float) -> float:
-        dur = None
-        for bs, be in _bot_spans_sorted:
-            if be <= start_s:
-                dur = be - bs
-            else:
-                break
-        return dur if dur is not None else fallback
-
     # stt_final textboxes — one box per event, centred at its timestamp.
-    # Boxes alternate between two y positions, both above the axes boundary.
-    # The indicator line runs from STT_LINE_BASE up to the bottom of each box.
+    # Boxes alternate between two levels; texts longer than 25 chars are wrapped.
+    # Level y positions are adjusted after first render so each level is tall
+    # enough for its tallest box (see _adjust_stt_levels below).
     STT_LINE_BASE = 1.20  # base of the tick line (inside axes area)
-    STT_Y_LO = 1.27       # lower level — just above Y_TOP so box is outside the plot
-    STT_Y_HI = 1.37       # upper level
+    STT_Y_BASE = 1.27     # bottom of level 0
+
+    stt_artists: list[tuple] = []
     for i, e in enumerate(stt_final_events):
-        y = STT_Y_LO if i % 2 == 0 else STT_Y_HI
-        ax_tp.plot(
-            [e["ts_s"], e["ts_s"]], [STT_LINE_BASE, y],
-            color="black", linewidth=0.8, alpha=0.5, clip_on=False, zorder=4,
-        )
-        ax_tp.text(
-            e["ts_s"], y, e.get("text", ""),
+        level = i % 2
+        raw = e.get("text", "")
+        text = textwrap.fill(raw, 25) if len(raw) > 25 else raw
+        t = ax_tp.text(
+            e["ts_s"], STT_Y_BASE, text,
             fontsize=7, ha="center", va="bottom",
             clip_on=False, zorder=5,
             bbox=dict(boxstyle="round,pad=0.2", fc="lightyellow", ec="#999999", alpha=0.85),
         )
+        (tick,) = ax_tp.plot(
+            [e["ts_s"], e["ts_s"]], [STT_LINE_BASE, STT_Y_BASE],
+            color="black", linewidth=0.8, alpha=0.5, clip_on=False, zorder=4,
+        )
+        stt_artists.append((t, tick, level))
 
     vad_legend: list = [mpatches.Patch(color="#66bb6a", alpha=0.6, label="vad active")]
     if stt_interim_times:
@@ -474,13 +466,12 @@ def plot(events: list[dict], title: str, save_path: str | None = None) -> None:
     # Bot utterance text — left-aligned to the start of the bot-speaking span
     bot_text_objects: list[tuple] = []
     for start, end, orig_text in bot_utterances:
-        wrap_dur = _prev_bot_duration(start, end - start)
         t = ax_bot.text(
             start + TEXT_MARGIN_S, BOT_TEXT_Y, "",
             fontsize=8, va="center", ha="left",
             clip_on=True, color="black", zorder=4,
         )
-        bot_text_objects.append((t, start, end, orig_text, wrap_dur))
+        bot_text_objects.append((t, start, end, orig_text))
 
     import matplotlib.lines as mlines  # type: ignore[import-untyped]
     bot_legend = [
@@ -526,8 +517,8 @@ def plot(events: list[dict], title: str, save_path: str | None = None) -> None:
         x_min, x_max = ax_vad.get_xlim()
         px_per_data = ax_px / (x_max - x_min)
         char_px = _char_px(8)
-        for t, start, end, orig_text, wrap_dur in bot_text_objects:
-            span_px = wrap_dur * px_per_data
+        for t, start, end, orig_text in bot_text_objects:
+            span_px = (end - start) * px_per_data
             chars_per_line = max(8, int(1 * span_px / char_px))
             t.set_text(textwrap.fill(orig_text, width=chars_per_line))
         _state["last_ax_px"] = ax_px
@@ -542,7 +533,36 @@ def plot(events: list[dict], title: str, save_path: str | None = None) -> None:
     except Exception:
         pass
 
-    fig.suptitle(title, fontsize=11)
+    # Adjust STT level y positions after first render so each level is tall
+    # enough for its tallest (possibly wrapped) box.
+    _stt_done: dict = {"v": False}
+
+    def _adjust_stt_levels(*_) -> None:
+        if _stt_done["v"] or not stt_artists:
+            return
+        try:
+            renderer = fig.canvas.get_renderer()  # type: ignore[attr-defined]
+        except AttributeError:
+            return
+        pts = ax_tp.transData.transform([[0, 0], [0, 1]])
+        px_per_data_y = abs(pts[1][1] - pts[0][1])
+        if px_per_data_y < 1:
+            return
+        max_h: dict[int, float] = {0: 0.0, 1: 0.0}
+        for t, tick, level in stt_artists:
+            h = t.get_window_extent(renderer=renderer).height / px_per_data_y
+            max_h[level] = max(max_h[level], h)
+        y_level = {0: STT_Y_BASE, 1: STT_Y_BASE + max_h[0] + 0.02}
+        for t, tick, level in stt_artists:
+            y = y_level[level]
+            t.set_position((t.get_position()[0], y))
+            tick.set_ydata([STT_LINE_BASE, y])
+        _stt_done["v"] = True
+        fig.canvas.draw_idle()
+
+    fig.canvas.mpl_connect("draw_event", _adjust_stt_levels)
+
+    fig.suptitle(title, fontsize=11, x=0.02, ha="left")
     plt.tight_layout()
 
     # Set ylims after tight_layout so twinx cannot reset them
@@ -551,6 +571,7 @@ def plot(events: list[dict], title: str, save_path: str | None = None) -> None:
     ax_bot.set_ylim(BOT_Y_BOTTOM, BOT_Y_TOP)
 
     _update_wrapping()
+    _adjust_stt_levels()
     if save_path:
         fig.savefig(save_path, dpi=150, bbox_inches="tight")
         print(f"Saved plot to {save_path}")

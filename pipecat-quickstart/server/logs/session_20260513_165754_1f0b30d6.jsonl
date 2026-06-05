@@ -1,0 +1,355 @@
+{"ts_ns": 0, "event": "pipeline_started", "wall_clock_unix_ns": 1778684275330553200, "session_id": "1f0b30d6"}
+{"ts_ns": 532000000, "event": "llm_started"}
+{"ts_ns": 3063000000, "event": "llm_token", "text": "I'm"}
+{"ts_ns": 3063000000, "event": "llm_token", "text": " your"}
+{"ts_ns": 3235000000, "event": "llm_token", "text": " virtual"}
+{"ts_ns": 3235000000, "event": "llm_token", "text": " assistant"}
+{"ts_ns": 3235000000, "event": "llm_token", "text": ","}
+{"ts_ns": 3235000000, "event": "llm_token", "text": " here"}
+{"ts_ns": 3250000000, "event": "llm_token", "text": " to"}
+{"ts_ns": 3250000000, "event": "llm_token", "text": " help"}
+{"ts_ns": 3250000000, "event": "llm_token", "text": " with"}
+{"ts_ns": 3250000000, "event": "llm_token", "text": " information"}
+{"ts_ns": 3250000000, "event": "llm_token", "text": ","}
+{"ts_ns": 3250000000, "event": "llm_token", "text": " answer"}
+{"ts_ns": 3250000000, "event": "llm_token", "text": " questions"}
+{"ts_ns": 3250000000, "event": "llm_token", "text": ","}
+{"ts_ns": 3266000000, "event": "llm_token", "text": " and"}
+{"ts_ns": 3266000000, "event": "llm_token", "text": " chat"}
+{"ts_ns": 3297000000, "event": "llm_token", "text": " about"}
+{"ts_ns": 3313000000, "event": "llm_token", "text": " whatever"}
+{"ts_ns": 3328000000, "event": "llm_token", "text": "'s"}
+{"ts_ns": 3328000000, "event": "llm_token", "text": " on"}
+{"ts_ns": 3360000000, "event": "llm_token", "text": " your"}
+{"ts_ns": 3360000000, "event": "llm_token", "text": " mind"}
+{"ts_ns": 3375000000, "event": "llm_token", "text": "."}
+{"ts_ns": 3391000000, "event": "llm_stopped"}
+{"ts_ns": 3407000000, "event": "tts_started", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102"}
+{"ts_ns": 3500000000, "event": "tts_first_audio", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102"}
+{"ts_ns": 3516000000, "event": "tts_text", "text": "I'm", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102", "aggregated_by": "word"}
+{"ts_ns": 3516000000, "event": "bot_speaking_started"}
+{"ts_ns": 3672000000, "event": "tts_text", "text": "your", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102", "aggregated_by": "word"}
+{"ts_ns": 3797000000, "event": "tts_text", "text": "virtual", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102", "aggregated_by": "word"}
+{"ts_ns": 4125000000, "event": "tts_text", "text": "assistant,", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102", "aggregated_by": "word"}
+{"ts_ns": 4672000000, "event": "tts_text", "text": "here", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102", "aggregated_by": "word"}
+{"ts_ns": 4750000000, "event": "tts_stopped", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102"}
+{"ts_ns": 4750000000, "event": "llm_stopped"}
+{"ts_ns": 4860000000, "event": "tts_text", "text": "to", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102", "aggregated_by": "word"}
+{"ts_ns": 4938000000, "event": "tts_text", "text": "help", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102", "aggregated_by": "word"}
+{"ts_ns": 5094000000, "event": "tts_text", "text": "with", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102", "aggregated_by": "word"}
+{"ts_ns": 5203000000, "event": "tts_text", "text": "information,", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102", "aggregated_by": "word"}
+{"ts_ns": 6266000000, "event": "tts_text", "text": "answer", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102", "aggregated_by": "word"}
+{"ts_ns": 6563000000, "event": "tts_text", "text": "questions,", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102", "aggregated_by": "word"}
+{"ts_ns": 7282000000, "event": "tts_text", "text": "and", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102", "aggregated_by": "word"}
+{"ts_ns": 7422000000, "event": "tts_text", "text": "chat", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102", "aggregated_by": "word"}
+{"ts_ns": 7703000000, "event": "tts_text", "text": "about", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102", "aggregated_by": "word"}
+{"ts_ns": 7907000000, "event": "tts_text", "text": "whatever's", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102", "aggregated_by": "word"}
+{"ts_ns": 8219000000, "event": "tts_text", "text": "on", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102", "aggregated_by": "word"}
+{"ts_ns": 8297000000, "event": "tts_text", "text": "your", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102", "aggregated_by": "word"}
+{"ts_ns": 8422000000, "event": "tts_text", "text": "mind.", "context_id": "c20e1e5f-6a9e-449c-be07-6433800dd102", "aggregated_by": "word"}
+{"ts_ns": 8782000000, "event": "bot_speaking_stopped"}
+{"ts_ns": 11266000000, "event": "vad_started"}
+{"ts_ns": 11266000000, "event": "interruption"}
+{"ts_ns": 11485000000, "event": "turn_probability", "probability": 0.28783851861953735, "is_complete": false, "e2e_ms": 189.1073000006145, "source": "periodic"}
+{"ts_ns": 11625000000, "event": "turn_probability", "probability": 0.030293136835098267, "is_complete": false, "e2e_ms": 111.58529999374878, "source": "periodic"}
+{"ts_ns": 11813000000, "event": "turn_probability", "probability": 0.6160098910331726, "is_complete": true, "e2e_ms": 106.31840000860393, "source": "periodic"}
+{"ts_ns": 11875000000, "event": "stt_interim", "text": "Sammy was"}
+{"ts_ns": 12047000000, "event": "turn_probability", "probability": 0.6614095568656921, "is_complete": true, "e2e_ms": 124.80199999117758, "source": "periodic"}
+{"ts_ns": 12250000000, "event": "turn_probability", "probability": 0.6701734066009521, "is_complete": true, "e2e_ms": 114.51870000746567, "source": "periodic"}
+{"ts_ns": 12438000000, "event": "turn_probability", "probability": 0.6957479119300842, "is_complete": true, "e2e_ms": 115.50770000030752, "source": "periodic"}
+{"ts_ns": 12532000000, "event": "vad_stopped"}
+{"ts_ns": 12625000000, "event": "turn_probability", "probability": 0.8857588768005371, "is_complete": true, "e2e_ms": 86.80430000822525, "source": "periodic"}
+{"ts_ns": 12657000000, "event": "stt_final", "text": "Sally was the girl who lived"}
+{"ts_ns": 12766000000, "event": "turn_probability", "probability": 0.8857588768005371, "is_complete": true, "e2e_ms": 120.55920000420883}
+{"ts_ns": 12766000000, "event": "user_turn_end"}
+{"ts_ns": 12766000000, "event": "llm_started"}
+{"ts_ns": 12813000000, "event": "stt_final", "text": "in"}
+{"ts_ns": 12813000000, "event": "interruption"}
+{"ts_ns": 12813000000, "event": "llm_stopped"}
+{"ts_ns": 12953000000, "event": "user_turn_end"}
+{"ts_ns": 12953000000, "event": "llm_started"}
+{"ts_ns": 13344000000, "event": "vad_started"}
+{"ts_ns": 13344000000, "event": "interruption"}
+{"ts_ns": 13344000000, "event": "llm_stopped"}
+{"ts_ns": 13532000000, "event": "turn_probability", "probability": 0.7987582683563232, "is_complete": true, "e2e_ms": 148.1260000000475, "source": "periodic"}
+{"ts_ns": 13719000000, "event": "vad_stopped"}
+{"ts_ns": 13782000000, "event": "turn_probability", "probability": 0.4122953414916992, "is_complete": false, "e2e_ms": 150.60439999797381, "source": "periodic"}
+{"ts_ns": 13891000000, "event": "stt_final", "text": "big"}
+{"ts_ns": 13969000000, "event": "turn_probability", "probability": 0.035279929637908936, "is_complete": false, "e2e_ms": 190.3601000085473}
+{"ts_ns": 13969000000, "event": "vad_started"}
+{"ts_ns": 13969000000, "event": "user_turn_end"}
+{"ts_ns": 13969000000, "event": "llm_started"}
+{"ts_ns": 14344000000, "event": "vad_stopped"}
+{"ts_ns": 14516000000, "event": "turn_probability", "probability": 0.13117775321006775, "is_complete": false, "e2e_ms": 142.16550000128336}
+{"ts_ns": 14547000000, "event": "stt_final", "text": "house."}
+{"ts_ns": 14547000000, "event": "interruption"}
+{"ts_ns": 14547000000, "event": "user_turn_end"}
+{"ts_ns": 14563000000, "event": "llm_stopped"}
+{"ts_ns": 14563000000, "event": "llm_started"}
+{"ts_ns": 15047000000, "event": "llm_token", "text": "Sur"}
+{"ts_ns": 15047000000, "event": "llm_token", "text": "rounded"}
+{"ts_ns": 15047000000, "event": "llm_token", "text": " by"}
+{"ts_ns": 15063000000, "event": "llm_token", "text": " mysteries"}
+{"ts_ns": 15063000000, "event": "llm_token", "text": " and"}
+{"ts_ns": 15063000000, "event": "llm_token", "text": " stories"}
+{"ts_ns": 15063000000, "event": "llm_token", "text": " of"}
+{"ts_ns": 15063000000, "event": "llm_token", "text": " her"}
+{"ts_ns": 15063000000, "event": "llm_token", "text": " own"}
+{"ts_ns": 15063000000, "event": "llm_token", "text": ","}
+{"ts_ns": 15078000000, "event": "llm_token", "text": " right"}
+{"ts_ns": 15078000000, "event": "llm_token", "text": "?"}
+{"ts_ns": 15078000000, "event": "llm_token", "text": " What"}
+{"ts_ns": 15078000000, "event": "llm_token", "text": " happened"}
+{"ts_ns": 15110000000, "event": "tts_started", "context_id": "a64d209a-a7f2-4a54-8606-1e9498eee9f3"}
+{"ts_ns": 15110000000, "event": "llm_token", "text": " next"}
+{"ts_ns": 15110000000, "event": "llm_token", "text": " in"}
+{"ts_ns": 15157000000, "event": "vad_started"}
+{"ts_ns": 15157000000, "event": "interruption"}
+{"ts_ns": 15157000000, "event": "llm_stopped"}
+{"ts_ns": 15344000000, "event": "turn_probability", "probability": 0.008120238780975342, "is_complete": false, "e2e_ms": 153.2571999996435, "source": "periodic"}
+{"ts_ns": 15563000000, "event": "stt_interim", "text": "And the house"}
+{"ts_ns": 15578000000, "event": "turn_probability", "probability": 0.018377035856246948, "is_complete": false, "e2e_ms": 162.36109999590553, "source": "periodic"}
+{"ts_ns": 15766000000, "event": "turn_probability", "probability": 0.010262787342071533, "is_complete": false, "e2e_ms": 165.2617000072496, "source": "periodic"}
+{"ts_ns": 15953000000, "event": "turn_probability", "probability": 0.007221877574920654, "is_complete": false, "e2e_ms": 100.65069999836851, "source": "periodic"}
+{"ts_ns": 16141000000, "event": "turn_probability", "probability": 0.006678372621536255, "is_complete": false, "e2e_ms": 118.61900000076275, "source": "periodic"}
+{"ts_ns": 16375000000, "event": "turn_probability", "probability": 0.006175607442855835, "is_complete": false, "e2e_ms": 116.15850000816863, "source": "periodic"}
+{"ts_ns": 16500000000, "event": "stt_interim", "text": "And the house was in"}
+{"ts_ns": 16578000000, "event": "turn_probability", "probability": 0.00949278473854065, "is_complete": false, "e2e_ms": 126.23660000099335, "source": "periodic"}
+{"ts_ns": 16813000000, "event": "turn_probability", "probability": 0.010670661926269531, "is_complete": false, "e2e_ms": 140.59959999576677, "source": "periodic"}
+{"ts_ns": 16969000000, "event": "vad_stopped"}
+{"ts_ns": 17000000000, "event": "turn_probability", "probability": 0.016362518072128296, "is_complete": false, "e2e_ms": 148.05809999234043, "source": "periodic"}
+{"ts_ns": 17110000000, "event": "turn_probability", "probability": 0.30425208806991577, "is_complete": false, "e2e_ms": 105.27970000111964}
+{"ts_ns": 17188000000, "event": "stt_final", "text": "And the house was in a state of"}
+{"ts_ns": 17188000000, "event": "user_turn_end"}
+{"ts_ns": 17188000000, "event": "llm_started"}
+{"ts_ns": 17235000000, "event": "vad_started"}
+{"ts_ns": 17235000000, "event": "interruption"}
+{"ts_ns": 17235000000, "event": "llm_stopped"}
+{"ts_ns": 17438000000, "event": "turn_probability", "probability": 0.5490754842758179, "is_complete": true, "e2e_ms": 119.50790000264533, "source": "periodic"}
+{"ts_ns": 17625000000, "event": "turn_probability", "probability": 0.8111233115196228, "is_complete": true, "e2e_ms": 128.24759999057278, "source": "periodic"}
+{"ts_ns": 17641000000, "event": "vad_stopped"}
+{"ts_ns": 17750000000, "event": "turn_probability", "probability": 0.8050150871276855, "is_complete": true, "e2e_ms": 93.0604999884963}
+{"ts_ns": 17891000000, "event": "stt_final", "text": "Kansas."}
+{"ts_ns": 17891000000, "event": "user_turn_end"}
+{"ts_ns": 17891000000, "event": "llm_started"}
+{"ts_ns": 19688000000, "event": "llm_token", "text": "The"}
+{"ts_ns": 19688000000, "event": "llm_token", "text": " house"}
+{"ts_ns": 19688000000, "event": "llm_token", "text": " was"}
+{"ts_ns": 19688000000, "event": "llm_token", "text": " in"}
+{"ts_ns": 19735000000, "event": "llm_token", "text": " a"}
+{"ts_ns": 19735000000, "event": "llm_token", "text": " state"}
+{"ts_ns": 19750000000, "event": "llm_token", "text": " of"}
+{"ts_ns": 19750000000, "event": "llm_token", "text": " mystery"}
+{"ts_ns": 19813000000, "event": "llm_token", "text": ","}
+{"ts_ns": 19813000000, "event": "llm_token", "text": " surrounded"}
+{"ts_ns": 19828000000, "event": "llm_token", "text": " by"}
+{"ts_ns": 19828000000, "event": "llm_token", "text": " vast"}
+{"ts_ns": 19860000000, "event": "llm_token", "text": " fields"}
+{"ts_ns": 19860000000, "event": "llm_token", "text": " and"}
+{"ts_ns": 19891000000, "event": "llm_token", "text": " whispers"}
+{"ts_ns": 19891000000, "event": "llm_token", "text": " of"}
+{"ts_ns": 19891000000, "event": "llm_token", "text": " adventure"}
+{"ts_ns": 19891000000, "event": "llm_token", "text": "."}
+{"ts_ns": 19922000000, "event": "llm_stopped"}
+{"ts_ns": 19922000000, "event": "tts_started", "context_id": "072a973b-1e88-4cfd-9fca-7a64add4a1e4"}
+{"ts_ns": 20063000000, "event": "tts_first_audio", "context_id": "072a973b-1e88-4cfd-9fca-7a64add4a1e4"}
+{"ts_ns": 20063000000, "event": "bot_speaking_started"}
+{"ts_ns": 20235000000, "event": "tts_text", "text": "The", "context_id": "072a973b-1e88-4cfd-9fca-7a64add4a1e4", "aggregated_by": "word"}
+{"ts_ns": 20391000000, "event": "tts_text", "text": "house", "context_id": "072a973b-1e88-4cfd-9fca-7a64add4a1e4", "aggregated_by": "word"}
+{"ts_ns": 20594000000, "event": "tts_text", "text": "was", "context_id": "072a973b-1e88-4cfd-9fca-7a64add4a1e4", "aggregated_by": "word"}
+{"ts_ns": 20719000000, "event": "tts_text", "text": "in", "context_id": "072a973b-1e88-4cfd-9fca-7a64add4a1e4", "aggregated_by": "word"}
+{"ts_ns": 20813000000, "event": "tts_text", "text": "a", "context_id": "072a973b-1e88-4cfd-9fca-7a64add4a1e4", "aggregated_by": "word"}
+{"ts_ns": 20844000000, "event": "tts_text", "text": "state", "context_id": "072a973b-1e88-4cfd-9fca-7a64add4a1e4", "aggregated_by": "word"}
+{"ts_ns": 21047000000, "event": "tts_text", "text": "of", "context_id": "072a973b-1e88-4cfd-9fca-7a64add4a1e4", "aggregated_by": "word"}
+{"ts_ns": 21110000000, "event": "tts_text", "text": "mystery,", "context_id": "072a973b-1e88-4cfd-9fca-7a64add4a1e4", "aggregated_by": "word"}
+{"ts_ns": 21110000000, "event": "tts_stopped", "context_id": "072a973b-1e88-4cfd-9fca-7a64add4a1e4"}
+{"ts_ns": 21110000000, "event": "llm_stopped"}
+{"ts_ns": 21657000000, "event": "tts_text", "text": "surrounded", "context_id": "072a973b-1e88-4cfd-9fca-7a64add4a1e4", "aggregated_by": "word"}
+{"ts_ns": 22032000000, "event": "tts_text", "text": "by", "context_id": "072a973b-1e88-4cfd-9fca-7a64add4a1e4", "aggregated_by": "word"}
+{"ts_ns": 22125000000, "event": "tts_text", "text": "vast", "context_id": "072a973b-1e88-4cfd-9fca-7a64add4a1e4", "aggregated_by": "word"}
+{"ts_ns": 22516000000, "event": "tts_text", "text": "fields", "context_id": "072a973b-1e88-4cfd-9fca-7a64add4a1e4", "aggregated_by": "word"}
+{"ts_ns": 22828000000, "event": "tts_text", "text": "and", "context_id": "072a973b-1e88-4cfd-9fca-7a64add4a1e4", "aggregated_by": "word"}
+{"ts_ns": 22969000000, "event": "tts_text", "text": "whispers", "context_id": "072a973b-1e88-4cfd-9fca-7a64add4a1e4", "aggregated_by": "word"}
+{"ts_ns": 23313000000, "event": "tts_text", "text": "of", "context_id": "072a973b-1e88-4cfd-9fca-7a64add4a1e4", "aggregated_by": "word"}
+{"ts_ns": 23391000000, "event": "tts_text", "text": "adventure.", "context_id": "072a973b-1e88-4cfd-9fca-7a64add4a1e4", "aggregated_by": "word"}
+{"ts_ns": 23891000000, "event": "bot_speaking_stopped"}
+{"ts_ns": 28844000000, "event": "vad_started"}
+{"ts_ns": 28860000000, "event": "interruption"}
+{"ts_ns": 29032000000, "event": "vad_stopped"}
+{"ts_ns": 29094000000, "event": "turn_probability", "probability": 0.963354766368866, "is_complete": true, "e2e_ms": 173.46120000001974, "source": "periodic"}
+{"ts_ns": 29203000000, "event": "turn_probability", "probability": 0.975929319858551, "is_complete": true, "e2e_ms": 125.96820000908338}
+{"ts_ns": 29282000000, "event": "stt_final", "text": "Yes."}
+{"ts_ns": 29297000000, "event": "user_turn_end"}
+{"ts_ns": 29297000000, "event": "llm_started"}
+{"ts_ns": 30438000000, "event": "llm_token", "text": "It"}
+{"ts_ns": 30438000000, "event": "llm_token", "text": " sounds"}
+{"ts_ns": 30485000000, "event": "llm_token", "text": " like"}
+{"ts_ns": 30485000000, "event": "llm_token", "text": " there's"}
+{"ts_ns": 30563000000, "event": "llm_token", "text": " more"}
+{"ts_ns": 30563000000, "event": "llm_token", "text": " to"}
+{"ts_ns": 30672000000, "event": "llm_token", "text": " explore"}
+{"ts_ns": 30672000000, "event": "llm_token", "text": " in"}
+{"ts_ns": 30688000000, "event": "llm_token", "text": " Sally"}
+{"ts_ns": 30688000000, "event": "llm_token", "text": "'s"}
+{"ts_ns": 30719000000, "event": "llm_token", "text": " story"}
+{"ts_ns": 30719000000, "event": "llm_token", "text": "!"}
+{"ts_ns": 30750000000, "event": "llm_token", "text": " What"}
+{"ts_ns": 30750000000, "event": "llm_token", "text": " happens"}
+{"ts_ns": 30766000000, "event": "tts_started", "context_id": "31ca40cc-00f9-410d-9841-907fc3d330f0"}
+{"ts_ns": 30782000000, "event": "llm_token", "text": " next"}
+{"ts_ns": 30782000000, "event": "llm_token", "text": "?"}
+{"ts_ns": 30813000000, "event": "llm_stopped"}
+{"ts_ns": 30891000000, "event": "tts_first_audio", "context_id": "31ca40cc-00f9-410d-9841-907fc3d330f0"}
+{"ts_ns": 30891000000, "event": "bot_speaking_started"}
+{"ts_ns": 30922000000, "event": "tts_text", "text": "It", "context_id": "31ca40cc-00f9-410d-9841-907fc3d330f0", "aggregated_by": "word"}
+{"ts_ns": 31078000000, "event": "tts_text", "text": "sounds", "context_id": "31ca40cc-00f9-410d-9841-907fc3d330f0", "aggregated_by": "word"}
+{"ts_ns": 31282000000, "event": "tts_text", "text": "like", "context_id": "31ca40cc-00f9-410d-9841-907fc3d330f0", "aggregated_by": "word"}
+{"ts_ns": 31407000000, "event": "tts_text", "text": "there's", "context_id": "31ca40cc-00f9-410d-9841-907fc3d330f0", "aggregated_by": "word"}
+{"ts_ns": 31594000000, "event": "tts_text", "text": "more", "context_id": "31ca40cc-00f9-410d-9841-907fc3d330f0", "aggregated_by": "word"}
+{"ts_ns": 31797000000, "event": "tts_text", "text": "to", "context_id": "31ca40cc-00f9-410d-9841-907fc3d330f0", "aggregated_by": "word"}
+{"ts_ns": 31891000000, "event": "tts_text", "text": "explore", "context_id": "31ca40cc-00f9-410d-9841-907fc3d330f0", "aggregated_by": "word"}
+{"ts_ns": 31969000000, "event": "tts_stopped", "context_id": "31ca40cc-00f9-410d-9841-907fc3d330f0"}
+{"ts_ns": 31969000000, "event": "llm_stopped"}
+{"ts_ns": 32219000000, "event": "tts_text", "text": "in", "context_id": "31ca40cc-00f9-410d-9841-907fc3d330f0", "aggregated_by": "word"}
+{"ts_ns": 32313000000, "event": "tts_text", "text": "Sally's", "context_id": "31ca40cc-00f9-410d-9841-907fc3d330f0", "aggregated_by": "word"}
+{"ts_ns": 32610000000, "event": "tts_text", "text": "story!", "context_id": "31ca40cc-00f9-410d-9841-907fc3d330f0", "aggregated_by": "word"}
+{"ts_ns": 33469000000, "event": "tts_text", "text": "What", "context_id": "31ca40cc-00f9-410d-9841-907fc3d330f0", "aggregated_by": "word"}
+{"ts_ns": 33641000000, "event": "tts_text", "text": "happens", "context_id": "31ca40cc-00f9-410d-9841-907fc3d330f0", "aggregated_by": "word"}
+{"ts_ns": 33922000000, "event": "tts_text", "text": "next?", "context_id": "31ca40cc-00f9-410d-9841-907fc3d330f0", "aggregated_by": "word"}
+{"ts_ns": 34391000000, "event": "bot_speaking_stopped"}
+{"ts_ns": 35688000000, "event": "vad_started"}
+{"ts_ns": 35688000000, "event": "interruption"}
+{"ts_ns": 35860000000, "event": "turn_probability", "probability": 0.9673051834106445, "is_complete": true, "e2e_ms": 99.74570000485983, "source": "periodic"}
+{"ts_ns": 36047000000, "event": "turn_probability", "probability": 0.3933483958244324, "is_complete": false, "e2e_ms": 94.3435000081081, "source": "periodic"}
+{"ts_ns": 36219000000, "event": "stt_interim", "text": "So what happens"}
+{"ts_ns": 36282000000, "event": "turn_probability", "probability": 0.12675368785858154, "is_complete": false, "e2e_ms": 129.84100000176113, "source": "periodic"}
+{"ts_ns": 36516000000, "event": "turn_probability", "probability": 0.8595805764198303, "is_complete": true, "e2e_ms": 163.22550000040792, "source": "periodic"}
+{"ts_ns": 36641000000, "event": "stt_final", "text": "So what happens next"}
+{"ts_ns": 36641000000, "event": "user_turn_end"}
+{"ts_ns": 36641000000, "event": "llm_started"}
+{"ts_ns": 36703000000, "event": "turn_probability", "probability": 0.9777120351791382, "is_complete": true, "e2e_ms": 148.52160000009462, "source": "periodic"}
+{"ts_ns": 37625000000, "event": "stt_interim", "text": "is that she goes"}
+{"ts_ns": 37625000000, "event": "interruption"}
+{"ts_ns": 37625000000, "event": "llm_stopped"}
+{"ts_ns": 38547000000, "event": "vad_stopped"}
+{"ts_ns": 38625000000, "event": "stt_interim", "text": "is that she goes on a trip"}
+{"ts_ns": 38657000000, "event": "turn_probability", "probability": 0.95045405626297, "is_complete": true, "e2e_ms": 96.07770000002347}
+{"ts_ns": 38672000000, "event": "stt_final", "text": "is that she goes on a trip"}
+{"ts_ns": 38782000000, "event": "user_turn_end"}
+{"ts_ns": 38782000000, "event": "llm_started"}
+{"ts_ns": 39532000000, "event": "vad_started"}
+{"ts_ns": 39532000000, "event": "interruption"}
+{"ts_ns": 39532000000, "event": "llm_stopped"}
+{"ts_ns": 39688000000, "event": "turn_probability", "probability": 0.03664523363113403, "is_complete": false, "e2e_ms": 105.52530000859406, "source": "periodic"}
+{"ts_ns": 39750000000, "event": "stt_interim", "text": "to"}
+{"ts_ns": 39875000000, "event": "turn_probability", "probability": 0.06193605065345764, "is_complete": false, "e2e_ms": 108.61310000473168, "source": "periodic"}
+{"ts_ns": 40125000000, "event": "turn_probability", "probability": 0.014565467834472656, "is_complete": false, "e2e_ms": 132.2943999985, "source": "periodic"}
+{"ts_ns": 40313000000, "event": "turn_probability", "probability": 0.3655349016189575, "is_complete": false, "e2e_ms": 137.77020000270568, "source": "periodic"}
+{"ts_ns": 40500000000, "event": "turn_probability", "probability": 0.012468844652175903, "is_complete": false, "e2e_ms": 120.38220000977162, "source": "periodic"}
+{"ts_ns": 40625000000, "event": "vad_stopped"}
+{"ts_ns": 40735000000, "event": "turn_probability", "probability": 0.1888766884803772, "is_complete": false, "e2e_ms": 95.91760000330396, "source": "periodic"}
+{"ts_ns": 40782000000, "event": "stt_interim", "text": "to the forest"}
+{"ts_ns": 40828000000, "event": "turn_probability", "probability": 0.1829163134098053, "is_complete": false, "e2e_ms": 127.31329999223817}
+{"ts_ns": 40875000000, "event": "stt_final", "text": "to the forest"}
+{"ts_ns": 40875000000, "event": "user_turn_end"}
+{"ts_ns": 40875000000, "event": "llm_started"}
+{"ts_ns": 41672000000, "event": "llm_token", "text": "In"}
+{"ts_ns": 41672000000, "event": "llm_token", "text": " the"}
+{"ts_ns": 41688000000, "event": "stt_final", "text": "And"}
+{"ts_ns": 41688000000, "event": "interruption"}
+{"ts_ns": 41688000000, "event": "user_turn_end"}
+{"ts_ns": 41688000000, "event": "llm_stopped"}
+{"ts_ns": 41688000000, "event": "llm_started"}
+{"ts_ns": 41703000000, "event": "tts_started", "context_id": "12bd7da8-16ce-42f4-89ec-4696a69f00d7"}
+{"ts_ns": 41766000000, "event": "vad_started"}
+{"ts_ns": 41766000000, "event": "interruption"}
+{"ts_ns": 41782000000, "event": "llm_stopped"}
+{"ts_ns": 41922000000, "event": "turn_probability", "probability": 0.012963265180587769, "is_complete": false, "e2e_ms": 133.33530000818428, "source": "periodic"}
+{"ts_ns": 42203000000, "event": "turn_probability", "probability": 0.02144560217857361, "is_complete": false, "e2e_ms": 146.73219999531284, "source": "periodic"}
+{"ts_ns": 42360000000, "event": "turn_probability", "probability": 0.32117950916290283, "is_complete": false, "e2e_ms": 119.13989999447949, "source": "periodic"}
+{"ts_ns": 42485000000, "event": "vad_stopped"}
+{"ts_ns": 42594000000, "event": "turn_probability", "probability": 0.7580885291099548, "is_complete": true, "e2e_ms": 115.11630000313744, "source": "periodic"}
+{"ts_ns": 42672000000, "event": "stt_final", "text": "forest, there are"}
+{"ts_ns": 42703000000, "event": "turn_probability", "probability": 0.7580885291099548, "is_complete": true, "e2e_ms": 127.67120001080912}
+{"ts_ns": 42703000000, "event": "vad_started"}
+{"ts_ns": 42703000000, "event": "user_turn_end"}
+{"ts_ns": 42703000000, "event": "llm_started"}
+{"ts_ns": 42922000000, "event": "vad_stopped"}
+{"ts_ns": 43047000000, "event": "turn_probability", "probability": 0.9424859285354614, "is_complete": true, "e2e_ms": 98.54120000090916}
+{"ts_ns": 43157000000, "event": "stt_final", "text": "big"}
+{"ts_ns": 43157000000, "event": "interruption"}
+{"ts_ns": 43172000000, "event": "llm_stopped"}
+{"ts_ns": 43313000000, "event": "user_turn_end"}
+{"ts_ns": 43313000000, "event": "llm_started"}
+{"ts_ns": 43469000000, "event": "vad_started"}
+{"ts_ns": 43469000000, "event": "interruption"}
+{"ts_ns": 43485000000, "event": "llm_stopped"}
+{"ts_ns": 43672000000, "event": "turn_probability", "probability": 0.9697068929672241, "is_complete": true, "e2e_ms": 131.03409999166615, "source": "periodic"}
+{"ts_ns": 43828000000, "event": "turn_probability", "probability": 0.6614095568656921, "is_complete": true, "e2e_ms": 92.10680000251159, "source": "periodic"}
+{"ts_ns": 44063000000, "event": "turn_probability", "probability": 0.04596525430679321, "is_complete": false, "e2e_ms": 147.4570999998832, "source": "periodic"}
+{"ts_ns": 44188000000, "event": "stt_interim", "text": "dangerous"}
+{"ts_ns": 44250000000, "event": "turn_probability", "probability": 0.053389936685562134, "is_complete": false, "e2e_ms": 130.34190000325907, "source": "periodic"}
+{"ts_ns": 44485000000, "event": "turn_probability", "probability": 0.3933483958244324, "is_complete": false, "e2e_ms": 112.63550000148825, "source": "periodic"}
+{"ts_ns": 44719000000, "event": "turn_probability", "probability": 0.011535167694091797, "is_complete": false, "e2e_ms": 126.86019999091513, "source": "periodic"}
+{"ts_ns": 44860000000, "event": "vad_stopped"}
+{"ts_ns": 44875000000, "event": "turn_probability", "probability": 0.059686750173568726, "is_complete": false, "e2e_ms": 87.57600000535604, "source": "periodic"}
+{"ts_ns": 44969000000, "event": "turn_probability", "probability": 0.20764753222465515, "is_complete": false, "e2e_ms": 94.4240999961039}
+{"ts_ns": 45094000000, "event": "stt_final", "text": "dangerous animals."}
+{"ts_ns": 45094000000, "event": "user_turn_end"}
+{"ts_ns": 45094000000, "event": "llm_started"}
+{"ts_ns": 45703000000, "event": "llm_token", "text": "S"}
+{"ts_ns": 45703000000, "event": "llm_token", "text": "ally"}
+{"ts_ns": 45875000000, "event": "llm_token", "text": " must"}
+{"ts_ns": 45875000000, "event": "llm_token", "text": " find"}
+{"ts_ns": 45891000000, "event": "llm_token", "text": " her"}
+{"ts_ns": 45891000000, "event": "llm_token", "text": " courage"}
+{"ts_ns": 45891000000, "event": "llm_token", "text": " as"}
+{"ts_ns": 45891000000, "event": "llm_token", "text": " she"}
+{"ts_ns": 45907000000, "event": "llm_token", "text": " navig"}
+{"ts_ns": 45907000000, "event": "llm_token", "text": "ates"}
+{"ts_ns": 45907000000, "event": "llm_token", "text": " the"}
+{"ts_ns": 45907000000, "event": "llm_token", "text": " forest"}
+{"ts_ns": 45953000000, "event": "llm_token", "text": ","}
+{"ts_ns": 45953000000, "event": "llm_token", "text": " encountering"}
+{"ts_ns": 45985000000, "event": "llm_token", "text": " those"}
+{"ts_ns": 45985000000, "event": "llm_token", "text": " formidable"}
+{"ts_ns": 46016000000, "event": "llm_token", "text": " creatures"}
+{"ts_ns": 46016000000, "event": "llm_token", "text": " along"}
+{"ts_ns": 46047000000, "event": "llm_token", "text": " the"}
+{"ts_ns": 46047000000, "event": "llm_token", "text": " way"}
+{"ts_ns": 46078000000, "event": "llm_token", "text": "."}
+{"ts_ns": 46078000000, "event": "llm_token", "text": " What"}
+{"ts_ns": 46078000000, "event": "tts_started", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08"}
+{"ts_ns": 46094000000, "event": "llm_token", "text": " does"}
+{"ts_ns": 46094000000, "event": "llm_token", "text": " she"}
+{"ts_ns": 46125000000, "event": "llm_token", "text": " do"}
+{"ts_ns": 46125000000, "event": "llm_token", "text": " next"}
+{"ts_ns": 46141000000, "event": "llm_token", "text": "?"}
+{"ts_ns": 46157000000, "event": "llm_stopped"}
+{"ts_ns": 46203000000, "event": "tts_first_audio", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08"}
+{"ts_ns": 46203000000, "event": "bot_speaking_started"}
+{"ts_ns": 46360000000, "event": "tts_text", "text": "Sally", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 46703000000, "event": "tts_text", "text": "must", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 46875000000, "event": "tts_text", "text": "find", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 47063000000, "event": "tts_text", "text": "her", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 47188000000, "event": "tts_text", "text": "courage", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 47547000000, "event": "tts_text", "text": "as", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 47672000000, "event": "tts_text", "text": "she", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 47782000000, "event": "tts_text", "text": "navigates", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 48110000000, "event": "tts_stopped", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08"}
+{"ts_ns": 48110000000, "event": "llm_stopped"}
+{"ts_ns": 48203000000, "event": "tts_text", "text": "the", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 48282000000, "event": "tts_text", "text": "forest,", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 48985000000, "event": "tts_text", "text": "encountering", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 49469000000, "event": "tts_text", "text": "those", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 49610000000, "event": "tts_text", "text": "formidable", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 50063000000, "event": "tts_text", "text": "creatures", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 50422000000, "event": "tts_text", "text": "along", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 50657000000, "event": "tts_text", "text": "the", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 50750000000, "event": "tts_text", "text": "way.", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 51735000000, "event": "tts_text", "text": "What", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 51922000000, "event": "tts_text", "text": "does", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 52016000000, "event": "tts_text", "text": "she", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 52172000000, "event": "tts_text", "text": "do", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 52282000000, "event": "tts_text", "text": "next?", "context_id": "58c6b4d8-9fab-4081-bf04-68d47913ee08", "aggregated_by": "word"}
+{"ts_ns": 52766000000, "event": "bot_speaking_stopped"}

@@ -1,1 +1,0 @@
-Replace the smart turn analyzer with something sentence based, word-level surprisal, entropy, etc.

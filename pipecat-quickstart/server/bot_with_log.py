@@ -48,6 +48,7 @@ from pipecat.frames.frames import (
     MetricsFrame,
     TranscriptionFrame,
     TTSAudioRawFrame,
+    TTSSpeakFrame,
     TTSStartedFrame,
     TTSStoppedFrame,
     TTSTextFrame,
@@ -67,15 +68,19 @@ from pipecat.transports.smallwebrtc.transport import SmallWebRTCTransport
 from pipecat.processors.aggregators.llm_response_universal import LLMContextAggregatorPair, LLMUserAggregatorParams
 from pipecat.runner.types import RunnerArguments
 from pipecat.services.openai.llm import OpenAILLMService
-from pipecat.services.cartesia.tts import CartesiaTTSService
+from pipecat.services.cartesia.tts import CartesiaTTSService, CartesiaEmotion, GenerationConfig
+from pipecat.transcriptions.language import Language
 from pipecat.transports.smallwebrtc.connection import SmallWebRTCConnection
 from pipecat.transports.base_transport import TransportParams
 from pipecat.audio.vad.silero import SileroVADAnalyzer
 from pipecat.audio.vad.vad_analyzer import VADParams
 from pipecat.turns.user_turn_strategies import UserTurnStrategies
 from pipecat.turns.user_stop.turn_analyzer_user_turn_stop_strategy import TurnAnalyzerUserTurnStopStrategy
+from pipecat.turns.user_stop.base_user_turn_stop_strategy import BaseUserTurnStopStrategy
+from pipecat.turns.user_start.vad_user_turn_start_strategy import VADUserTurnStartStrategy
 from pipecat.audio.turn.smart_turn.local_smart_turn_v3 import LocalSmartTurnAnalyzerV3  # PeriodicSmartTurnAnalyzer
 from pipecat.audio.turn.base_turn_analyzer import EndOfTurnState  # PeriodicSmartTurnAnalyzer
+from pipecat.audio.turn.smart_turn.base_smart_turn import SmartTurnParams
 
 load_dotenv(override=True)
 
@@ -95,9 +100,64 @@ LOG_DIR = os.path.join(os.path.dirname(__file__), "logs")
 # turn-ends on natural pauses. Default (framework): 0.2 s.
 VAD_STOP_SECS: float = 0.2
 
+# ---------------------------------------------------------------------------
+# SmartTurn max silence before forced turn-end
+# ---------------------------------------------------------------------------
+# After VAD stop, the SmartTurn model waits up to this many seconds of silence
+# before firing user_turn_end regardless of model probability. Default: 3.0 s.
+SMART_TURN_STOP_SECS: float = 0.2
 
 # ---------------------------------------------------------------------------
-# Periodic smart-turn analyzer (disabled)
+# Turn analyzer mode
+# ---------------------------------------------------------------------------
+# Selects the turn-end detection strategy. Switch this constant to experiment.
+#
+#   "vad_only"   — fire user_turn_end immediately on VAD silence, no ML model
+#   "smart_turn" — PeriodicSmartTurnAnalyzerV3 (current default)
+#
+# Future options (see docs/todo.md): "sentence_entropy", etc.
+# Available options: smart_turn, vad_only
+TURN_ANALYZER_MODE: str = "vad_only"
+
+# ---------------------------------------------------------------------------
+# TTS settings
+# ---------------------------------------------------------------------------
+# Speech rate multiplier. Valid range: [0.6, 1.5]. Default (Cartesia): 1.0.
+TTS_SPEED: float = 1.0
+# Output volume multiplier. Valid range: [0.5, 2.0]. Default (Cartesia): 1.0.
+TTS_VOLUME: float = 2.0
+# Emotional tone of the voice. Set to None to use the voice's default.
+# See CartesiaEmotion for all options, e.g. CartesiaEmotion.CALM, CartesiaEmotion.EXCITED.
+TTS_EMOTION: str | None = None
+# Synthesis language. Set to None to use the voice's default.
+TTS_LANGUAGE: Language | None = Language.EN
+
+# ---------------------------------------------------------------------------
+# System prompt
+# ---------------------------------------------------------------------------
+# Role description for the bot.
+SYSTEM_PROMPT_ROLE: str = (
+    "You are a friendly quizmaster hosting a trivia game. You ask engaging questions, wait for the user to answer, and then respond with the correct answer and a fun fact. Keep the tone light and conversational."
+)
+
+# Conversational conventions appended to the system prompt.
+SYSTEM_PROMPT_CONVENTIONS: str = (
+    "Your responses will be spoken aloud, so avoid emojis, bullet points, "
+    "or other formatting that can't be spoken."
+)
+
+SYSTEM_PROMPT: str = f"{SYSTEM_PROMPT_ROLE} {SYSTEM_PROMPT_CONVENTIONS}"
+
+# ---------------------------------------------------------------------------
+# Initial bot message
+# ---------------------------------------------------------------------------
+# Exact text spoken by the bot when the session starts. Sent directly to TTS,
+# bypassing the LLM. Set to None to let the LLM generate its own greeting.
+INITIAL_BOT_MESSAGE: str | None = "Hello! I'm ready to quiz when you are."
+
+
+# ---------------------------------------------------------------------------
+# Periodic smart-turn analyzer
 # ---------------------------------------------------------------------------
 
 class PeriodicSmartTurnAnalyzer(LocalSmartTurnAnalyzerV3):
@@ -161,6 +221,61 @@ class PeriodicSmartTurnAnalyzer(LocalSmartTurnAnalyzerV3):
         with self._pending_lock:
             self._pending_metrics.clear()
         self._last_periodic_time = 0.0
+
+
+# ---------------------------------------------------------------------------
+# VAD-only stop strategy
+# ---------------------------------------------------------------------------
+
+class VADOnlyUserTurnStopStrategy(BaseUserTurnStopStrategy):
+    """Fires user_turn_end on the first stt_final after each VAD start.
+
+    Waiting for the transcript (rather than firing on raw vad_stopped) ensures
+    the LLM context is non-empty when the turn fires. stt_final typically
+    arrives within 100-200ms of VAD stop, so latency impact is minimal.
+    Falls back to the UserTurnController's stop_timeout if no transcript comes.
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._fired_since_vad_start: bool = False
+
+    async def reset(self):
+        # Tracks VAD segments, not turns — intentionally not cleared here.
+        pass
+
+    async def process_frame(self, frame):
+        if isinstance(frame, VADUserStartedSpeakingFrame):
+            self._fired_since_vad_start = False
+        elif isinstance(frame, TranscriptionFrame) and frame.text.strip():
+            if not self._fired_since_vad_start:
+                self._fired_since_vad_start = True
+                await self.trigger_user_turn_stopped()
+
+
+# ---------------------------------------------------------------------------
+# Turn strategy factory
+# ---------------------------------------------------------------------------
+
+def _make_turn_strategy(mode: str) -> tuple["PeriodicSmartTurnAnalyzer | None", UserTurnStrategies]:
+    """Return (analyzer_or_None, UserTurnStrategies) for the given TURN_ANALYZER_MODE."""
+    if mode == "vad_only":
+        # Omit TranscriptionUserTurnStartStrategy: it re-opens the user turn on
+        # late-arriving Deepgram frames after VAD has already stopped, leaving
+        # the turn unclosed until the 5s UserTurnController timeout fires.
+        return None, UserTurnStrategies(
+            start=[VADUserTurnStartStrategy()],
+            stop=[VADOnlyUserTurnStopStrategy()],
+        )
+    if mode == "smart_turn":
+        analyzer = PeriodicSmartTurnAnalyzer(
+            inference_interval_ms=200,
+            params=SmartTurnParams(stop_secs=SMART_TURN_STOP_SECS),
+        )
+        return analyzer, UserTurnStrategies(
+            stop=[TurnAnalyzerUserTurnStopStrategy(turn_analyzer=analyzer)],
+        )
+    raise ValueError(f"Unknown TURN_ANALYZER_MODE: {mode!r}")
 
 
 # ---------------------------------------------------------------------------
@@ -344,6 +459,12 @@ async def run_bot(transport: BaseTransport):
             api_key=os.getenv("CARTESIA_API_KEY") or "",
             settings=CartesiaTTSService.Settings(
                 voice=os.getenv("CARTESIA_VOICE_ID", "71a7ad14-091c-4e8e-a314-022ece01c121"),
+                language=TTS_LANGUAGE,
+                generation_config=GenerationConfig(
+                    speed=TTS_SPEED,
+                    volume=TTS_VOLUME,
+                    emotion=TTS_EMOTION,
+                ),
             ),
         )
 
@@ -353,21 +474,19 @@ async def run_bot(transport: BaseTransport):
             api_key=os.getenv("OPENAI_API_KEY") or "",
             settings=OpenAILLMService.Settings(
                 model=os.getenv("OPENAI_MODEL", "gpt-4.1"),
-                system_instruction="You are a helpful assistant in a voice conversation. Your responses will be spoken aloud, so avoid emojis, bullet points, or other formatting that can't be spoken. Respond to what the user said in a creative, helpful, and brief way.",
+                system_instruction=SYSTEM_PROMPT,
             ),
         )
 
 
 
     context = LLMContext()
-    periodic_analyzer = PeriodicSmartTurnAnalyzer(inference_interval_ms=200)  # PeriodicSmartTurnAnalyzer
+    analyzer, turn_strategies = _make_turn_strategy(TURN_ANALYZER_MODE)
     user_aggregator, assistant_aggregator = LLMContextAggregatorPair(
         context,
         user_params=LLMUserAggregatorParams(
             vad_analyzer=SileroVADAnalyzer(params=VADParams(stop_secs=VAD_STOP_SECS)),
-            user_turn_strategies=UserTurnStrategies(  # PeriodicSmartTurnAnalyzer
-                stop=[TurnAnalyzerUserTurnStopStrategy(turn_analyzer=periodic_analyzer)]
-            ),
+            user_turn_strategies=turn_strategies,
         ),
     )
 
@@ -398,7 +517,7 @@ async def run_bot(transport: BaseTransport):
 
     observers = []
     if ENABLE_LOGGING:
-        observers.append(ConversationLogObserver(turn_analyzer=periodic_analyzer))
+        observers.append(ConversationLogObserver(turn_analyzer=analyzer))
 
     task = PipelineTask(
         pipeline,
@@ -411,9 +530,11 @@ async def run_bot(transport: BaseTransport):
 
     @task.rtvi.event_handler("on_client_ready")
     async def on_client_ready(rtvi):
-        # Kick off the conversation
-        context.add_message({"role": "user", "content": "Please introduce yourself."})
-        await task.queue_frames([LLMRunFrame()])
+        if INITIAL_BOT_MESSAGE is not None:
+            await task.queue_frames([TTSSpeakFrame(text=INITIAL_BOT_MESSAGE)])
+        else:
+            context.add_message({"role": "user", "content": "Please introduce yourself."})
+            await task.queue_frames([LLMRunFrame()])
 
     @transport.event_handler("on_client_connected")
     async def on_client_connected(transport, client):

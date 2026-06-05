@@ -1,0 +1,162 @@
+{"ts_ns": 0, "event": "pipeline_started", "wall_clock_unix_ns": 1780647385486753600, "session_id": "53b0d979"}
+{"ts_ns": 453000000, "event": "tts_started", "context_id": "53e9482b-bd64-459a-a9dc-c165cf10ee8f"}
+{"ts_ns": 610000000, "event": "tts_first_audio", "context_id": "53e9482b-bd64-459a-a9dc-c165cf10ee8f"}
+{"ts_ns": 610000000, "event": "bot_speaking_started"}
+{"ts_ns": 953000000, "event": "tts_text", "text": "Hello!", "context_id": "53e9482b-bd64-459a-a9dc-c165cf10ee8f", "aggregated_by": "word"}
+{"ts_ns": 1407000000, "event": "tts_stopped", "context_id": "53e9482b-bd64-459a-a9dc-c165cf10ee8f"}
+{"ts_ns": 1797000000, "event": "tts_text", "text": "I'm", "context_id": "53e9482b-bd64-459a-a9dc-c165cf10ee8f", "aggregated_by": "word"}
+{"ts_ns": 1985000000, "event": "tts_text", "text": "ready", "context_id": "53e9482b-bd64-459a-a9dc-c165cf10ee8f", "aggregated_by": "word"}
+{"ts_ns": 2188000000, "event": "tts_text", "text": "to", "context_id": "53e9482b-bd64-459a-a9dc-c165cf10ee8f", "aggregated_by": "word"}
+{"ts_ns": 2313000000, "event": "tts_text", "text": "quiz", "context_id": "53e9482b-bd64-459a-a9dc-c165cf10ee8f", "aggregated_by": "word"}
+{"ts_ns": 2610000000, "event": "tts_text", "text": "when", "context_id": "53e9482b-bd64-459a-a9dc-c165cf10ee8f", "aggregated_by": "word"}
+{"ts_ns": 2719000000, "event": "tts_text", "text": "you", "context_id": "53e9482b-bd64-459a-a9dc-c165cf10ee8f", "aggregated_by": "word"}
+{"ts_ns": 2844000000, "event": "tts_text", "text": "are.", "context_id": "53e9482b-bd64-459a-a9dc-c165cf10ee8f", "aggregated_by": "word"}
+{"ts_ns": 3078000000, "event": "bot_speaking_stopped"}
+{"ts_ns": 5235000000, "event": "vad_started"}
+{"ts_ns": 5235000000, "event": "interruption"}
+{"ts_ns": 5688000000, "event": "stt_interim", "text": "Good. I'm ready"}
+{"ts_ns": 5891000000, "event": "vad_stopped"}
+{"ts_ns": 6125000000, "event": "stt_final", "text": "Good. I'm ready to"}
+{"ts_ns": 6125000000, "event": "user_turn_end"}
+{"ts_ns": 6125000000, "event": "llm_started"}
+{"ts_ns": 7969000000, "event": "llm_token", "text": "Awesome"}
+{"ts_ns": 7969000000, "event": "llm_token", "text": "!"}
+{"ts_ns": 8032000000, "event": "llm_token", "text": " Let"}
+{"ts_ns": 8032000000, "event": "llm_token", "text": "\u2019s"}
+{"ts_ns": 8032000000, "event": "llm_token", "text": " dive"}
+{"ts_ns": 8032000000, "event": "llm_token", "text": " into"}
+{"ts_ns": 8032000000, "event": "llm_token", "text": " some"}
+{"ts_ns": 8032000000, "event": "llm_token", "text": " trivia"}
+{"ts_ns": 8047000000, "event": "tts_started", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723"}
+{"ts_ns": 8047000000, "event": "llm_token", "text": " fun"}
+{"ts_ns": 8047000000, "event": "llm_token", "text": "."}
+{"ts_ns": 8078000000, "event": "llm_token", "text": " Here"}
+{"ts_ns": 8078000000, "event": "llm_token", "text": "\u2019s"}
+{"ts_ns": 8125000000, "event": "llm_token", "text": " your"}
+{"ts_ns": 8125000000, "event": "llm_token", "text": " first"}
+{"ts_ns": 8141000000, "event": "llm_token", "text": " question"}
+{"ts_ns": 8141000000, "event": "llm_token", "text": ":"}
+{"ts_ns": 8157000000, "event": "llm_token", "text": " What"}
+{"ts_ns": 8157000000, "event": "llm_token", "text": " is"}
+{"ts_ns": 8172000000, "event": "tts_first_audio", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723"}
+{"ts_ns": 8172000000, "event": "bot_speaking_started"}
+{"ts_ns": 8188000000, "event": "llm_token", "text": " the"}
+{"ts_ns": 8188000000, "event": "llm_token", "text": " capital"}
+{"ts_ns": 8235000000, "event": "llm_token", "text": " city"}
+{"ts_ns": 8235000000, "event": "llm_token", "text": " of"}
+{"ts_ns": 8235000000, "event": "tts_text", "text": "Awesome!", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723", "aggregated_by": "word"}
+{"ts_ns": 8235000000, "event": "llm_token", "text": " France"}
+{"ts_ns": 8235000000, "event": "llm_token", "text": "?"}
+{"ts_ns": 8266000000, "event": "llm_stopped"}
+{"ts_ns": 8688000000, "event": "tts_text", "text": "Let\u2019s", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723", "aggregated_by": "word"}
+{"ts_ns": 8969000000, "event": "tts_text", "text": "dive", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723", "aggregated_by": "word"}
+{"ts_ns": 9203000000, "event": "tts_text", "text": "into", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723", "aggregated_by": "word"}
+{"ts_ns": 9360000000, "event": "tts_text", "text": "some", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723", "aggregated_by": "word"}
+{"ts_ns": 9500000000, "event": "tts_text", "text": "trivia", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723", "aggregated_by": "word"}
+{"ts_ns": 9500000000, "event": "tts_stopped", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723"}
+{"ts_ns": 9500000000, "event": "llm_stopped"}
+{"ts_ns": 9813000000, "event": "tts_text", "text": "fun.", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723", "aggregated_by": "word"}
+{"ts_ns": 10328000000, "event": "tts_text", "text": "Here\u2019s", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723", "aggregated_by": "word"}
+{"ts_ns": 10750000000, "event": "tts_text", "text": "your", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723", "aggregated_by": "word"}
+{"ts_ns": 10875000000, "event": "tts_text", "text": "first", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723", "aggregated_by": "word"}
+{"ts_ns": 11125000000, "event": "tts_text", "text": "question:", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723", "aggregated_by": "word"}
+{"ts_ns": 11735000000, "event": "tts_text", "text": "What", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723", "aggregated_by": "word"}
+{"ts_ns": 12047000000, "event": "tts_text", "text": "is", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723", "aggregated_by": "word"}
+{"ts_ns": 12125000000, "event": "tts_text", "text": "the", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723", "aggregated_by": "word"}
+{"ts_ns": 12219000000, "event": "tts_text", "text": "capital", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723", "aggregated_by": "word"}
+{"ts_ns": 12578000000, "event": "tts_text", "text": "city", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723", "aggregated_by": "word"}
+{"ts_ns": 12828000000, "event": "tts_text", "text": "of", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723", "aggregated_by": "word"}
+{"ts_ns": 12891000000, "event": "tts_text", "text": "France?", "context_id": "ad5920aa-f1fa-453c-87b3-3764e69fe723", "aggregated_by": "word"}
+{"ts_ns": 13282000000, "event": "bot_speaking_stopped"}
+{"ts_ns": 16657000000, "event": "vad_started"}
+{"ts_ns": 16657000000, "event": "interruption"}
+{"ts_ns": 17063000000, "event": "stt_interim", "text": "That would be"}
+{"ts_ns": 17672000000, "event": "vad_stopped"}
+{"ts_ns": 17860000000, "event": "stt_final", "text": "That would be Berlin."}
+{"ts_ns": 17860000000, "event": "user_turn_end"}
+{"ts_ns": 17860000000, "event": "llm_started"}
+{"ts_ns": 18328000000, "event": "llm_token", "text": "Nice"}
+{"ts_ns": 18328000000, "event": "llm_token", "text": " try"}
+{"ts_ns": 18344000000, "event": "llm_token", "text": ","}
+{"ts_ns": 18344000000, "event": "llm_token", "text": " but"}
+{"ts_ns": 18375000000, "event": "llm_token", "text": " the"}
+{"ts_ns": 18375000000, "event": "llm_token", "text": " correct"}
+{"ts_ns": 18422000000, "event": "llm_token", "text": " answer"}
+{"ts_ns": 18422000000, "event": "llm_token", "text": " is"}
+{"ts_ns": 18485000000, "event": "llm_token", "text": " Paris"}
+{"ts_ns": 18485000000, "event": "llm_token", "text": "!"}
+{"ts_ns": 18500000000, "event": "llm_token", "text": " Did"}
+{"ts_ns": 18500000000, "event": "llm_token", "text": " you"}
+{"ts_ns": 18516000000, "event": "tts_started", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd"}
+{"ts_ns": 18532000000, "event": "llm_token", "text": " know"}
+{"ts_ns": 18532000000, "event": "llm_token", "text": " that"}
+{"ts_ns": 18563000000, "event": "llm_token", "text": " Paris"}
+{"ts_ns": 18578000000, "event": "llm_token", "text": " is"}
+{"ts_ns": 18594000000, "event": "llm_token", "text": " often"}
+{"ts_ns": 18594000000, "event": "llm_token", "text": " called"}
+{"ts_ns": 18610000000, "event": "llm_token", "text": " \""}
+{"ts_ns": 18610000000, "event": "llm_token", "text": "The"}
+{"ts_ns": 18625000000, "event": "llm_token", "text": " City"}
+{"ts_ns": 18625000000, "event": "llm_token", "text": " of"}
+{"ts_ns": 18641000000, "event": "tts_first_audio", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd"}
+{"ts_ns": 18641000000, "event": "bot_speaking_started"}
+{"ts_ns": 18641000000, "event": "llm_token", "text": " Light"}
+{"ts_ns": 18641000000, "event": "llm_token", "text": "\""}
+{"ts_ns": 18688000000, "event": "llm_token", "text": " because"}
+{"ts_ns": 18688000000, "event": "llm_token", "text": " it"}
+{"ts_ns": 18750000000, "event": "tts_text", "text": "Nice", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 18782000000, "event": "llm_token", "text": " was"}
+{"ts_ns": 18782000000, "event": "llm_token", "text": " one"}
+{"ts_ns": 18782000000, "event": "llm_token", "text": " of"}
+{"ts_ns": 18797000000, "event": "llm_token", "text": " the"}
+{"ts_ns": 18797000000, "event": "llm_token", "text": " first"}
+{"ts_ns": 18797000000, "event": "llm_token", "text": " cities"}
+{"ts_ns": 18844000000, "event": "llm_token", "text": " to"}
+{"ts_ns": 18844000000, "event": "llm_token", "text": " have"}
+{"ts_ns": 18891000000, "event": "llm_token", "text": " street"}
+{"ts_ns": 18891000000, "event": "llm_token", "text": " lighting"}
+{"ts_ns": 18953000000, "event": "llm_token", "text": "?"}
+{"ts_ns": 18953000000, "event": "llm_token", "text": " Ready"}
+{"ts_ns": 19000000000, "event": "llm_token", "text": " for"}
+{"ts_ns": 19000000000, "event": "llm_token", "text": " another"}
+{"ts_ns": 19016000000, "event": "llm_token", "text": " question"}
+{"ts_ns": 19016000000, "event": "llm_token", "text": "?"}
+{"ts_ns": 19032000000, "event": "llm_stopped"}
+{"ts_ns": 19110000000, "event": "tts_text", "text": "try,", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 19500000000, "event": "tts_text", "text": "but", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 19688000000, "event": "tts_text", "text": "the", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 19750000000, "event": "tts_text", "text": "correct", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 20078000000, "event": "tts_text", "text": "answer", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 20344000000, "event": "tts_text", "text": "is", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 20516000000, "event": "tts_text", "text": "Paris!", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 21016000000, "event": "tts_stopped", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd"}
+{"ts_ns": 21016000000, "event": "llm_stopped"}
+{"ts_ns": 21719000000, "event": "tts_text", "text": "Did", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 21891000000, "event": "tts_text", "text": "you", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 22016000000, "event": "tts_text", "text": "know", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 22188000000, "event": "tts_text", "text": "that", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 22328000000, "event": "tts_text", "text": "Paris", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 22641000000, "event": "tts_text", "text": "is", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 22735000000, "event": "tts_text", "text": "often", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 23032000000, "event": "tts_text", "text": "called", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 23516000000, "event": "tts_text", "text": "\"The", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 23657000000, "event": "tts_text", "text": "City", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 23922000000, "event": "tts_text", "text": "of", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 24016000000, "event": "tts_text", "text": "Light\"", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 24625000000, "event": "tts_text", "text": "because", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 24860000000, "event": "tts_text", "text": "it", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 24953000000, "event": "tts_text", "text": "was", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 25078000000, "event": "tts_text", "text": "one", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 25188000000, "event": "tts_text", "text": "of", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 25250000000, "event": "tts_text", "text": "the", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 25344000000, "event": "tts_text", "text": "first", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 25610000000, "event": "tts_text", "text": "cities", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 25969000000, "event": "tts_text", "text": "to", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 26063000000, "event": "tts_text", "text": "have", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 26266000000, "event": "tts_text", "text": "street", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 26516000000, "event": "tts_text", "text": "lighting?", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 27250000000, "event": "tts_text", "text": "Ready", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 27563000000, "event": "tts_text", "text": "for", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 27688000000, "event": "tts_text", "text": "another", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 27922000000, "event": "tts_text", "text": "question?", "context_id": "49eaf33d-0c77-4c89-af7f-f18db827fddd", "aggregated_by": "word"}
+{"ts_ns": 28407000000, "event": "bot_speaking_stopped"}
