@@ -295,9 +295,14 @@ class ConversationLogObserver(BaseObserver):
     wall time during analysis.
     """
 
-    def __init__(self, turn_analyzer: "PeriodicSmartTurnAnalyzer | None" = None):
+    def __init__(
+        self,
+        turn_analyzer: "PeriodicSmartTurnAnalyzer | None" = None,
+        config: dict | None = None,
+    ):
         super().__init__()
         self._turn_analyzer = turn_analyzer
+        self._config: dict = config or {}
         self._polling_task: asyncio.Task | None = None
         self._session_id = uuid.uuid4().hex[:8]
         os.makedirs(LOG_DIR, exist_ok=True)
@@ -322,6 +327,8 @@ class ConversationLogObserver(BaseObserver):
     async def on_pipeline_started(self):
         wall_clock_ns = time.time_ns()
         self._log("pipeline_started", 0, wall_clock_unix_ns=wall_clock_ns, session_id=self._session_id)
+        if self._config:
+            self._log("session_config", 0, **self._config)
         if self._turn_analyzer is not None:
             self._polling_task = asyncio.create_task(self._poll_periodic_metrics())
 
@@ -517,7 +524,18 @@ async def run_bot(transport: BaseTransport):
 
     observers = []
     if ENABLE_LOGGING:
-        observers.append(ConversationLogObserver(turn_analyzer=analyzer))
+        session_config = {
+            "vad_stop_secs": VAD_STOP_SECS,
+            "smart_turn_stop_secs": SMART_TURN_STOP_SECS,
+            "turn_analyzer_mode": TURN_ANALYZER_MODE,
+            "tts_speed": TTS_SPEED,
+            "tts_volume": TTS_VOLUME,
+            "tts_emotion": TTS_EMOTION,
+            "tts_language": TTS_LANGUAGE.value if TTS_LANGUAGE is not None else None,
+            "system_prompt": SYSTEM_PROMPT,
+            "initial_bot_message": INITIAL_BOT_MESSAGE,
+        }
+        observers.append(ConversationLogObserver(turn_analyzer=analyzer, config=session_config))
 
     task = PipelineTask(
         pipeline,
