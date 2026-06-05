@@ -301,11 +301,12 @@ def plot(events: list[dict], title: str, save_path: str | None = None) -> None:
     t_max = max((e["ts_s"] for e in events), default=1.0) * 1.05
 
     vad_times, vad_active, turn_ends = build_vad_series(events)
-    transcript_turns = build_transcript_turns(events)
     tp_times, tp_probs, tp_complete = build_turn_prob_series(events)
     llm_starts, llm_stops, llm_token_times, bot_spans, bot_utterances = build_bot_panel_data(events, t_max)
     tts_bars = build_tts_gantt(events, t_max)
     stt_interim_times = [e["ts_s"] for e in events if e["event"] == "stt_interim"]
+    stt_final_events = [e for e in events if e["event"] == "stt_final"]
+    interruption_times = [e["ts_s"] for e in events if e["event"] == "interruption"]
     cmap = matplotlib.colormaps["tab10"]  # type: ignore[attr-defined]
 
     fig, (ax_vad, ax_bot) = plt.subplots(
@@ -377,20 +378,24 @@ def plot(events: list[dict], title: str, save_path: str | None = None) -> None:
                 break
         return dur if dur is not None else fallback
 
-    # Transcript text objects — right-aligned, anchored at user_turn_end (minus a
-    # small margin) and sitting above the VAD band (va="bottom" at y=1.02).
-    # Wrapping width equals the span from the first VAD start to user_turn_end.
-    text_objects: list[tuple] = []
-    prev_turn_end = 0.0
-    for start, vad_stop, turn_end, orig_text in transcript_turns:
-        wrap_dur = (turn_end - prev_turn_end)/3
-        t = ax_vad.text(
-            turn_end - TEXT_MARGIN_S, 1.02, "",
-            fontsize=8, va="bottom", ha="right",
-            clip_on=False, color="black", zorder=4,
+    # stt_final textboxes — one box per event, centred at its timestamp.
+    # Boxes alternate between two y positions, both above the axes boundary.
+    # The indicator line runs from STT_LINE_BASE up to the bottom of each box.
+    STT_LINE_BASE = 1.20  # base of the tick line (inside axes area)
+    STT_Y_LO = 1.27       # lower level — just above Y_TOP so box is outside the plot
+    STT_Y_HI = 1.37       # upper level
+    for i, e in enumerate(stt_final_events):
+        y = STT_Y_LO if i % 2 == 0 else STT_Y_HI
+        ax_tp.plot(
+            [e["ts_s"], e["ts_s"]], [STT_LINE_BASE, y],
+            color="black", linewidth=0.8, alpha=0.5, clip_on=False, zorder=4,
         )
-        text_objects.append((t, start, vad_stop, orig_text, wrap_dur))
-        prev_turn_end = turn_end
+        ax_tp.text(
+            e["ts_s"], y, e.get("text", ""),
+            fontsize=7, ha="center", va="bottom",
+            clip_on=False, zorder=5,
+            bbox=dict(boxstyle="round,pad=0.2", fc="lightyellow", ec="#999999", alpha=0.85),
+        )
 
     vad_legend: list = [mpatches.Patch(color="#66bb6a", alpha=0.6, label="vad active")]
     if stt_interim_times:
@@ -403,8 +408,8 @@ def plot(events: list[dict], title: str, save_path: str | None = None) -> None:
             mpatches.Patch(color="#81c784", label="turn_prob (incomplete)"),
             mpatches.Patch(color="#e57373", label="turn_prob (complete)"),
         ]
-    if transcript_turns:
-        vad_legend.append(mpatches.Patch(color="black", label="transcript"))
+    if stt_final_events:
+        vad_legend.append(mpatches.Patch(fc="lightyellow", ec="#999999", alpha=0.85, label="stt_final"))
     ax_vad.legend(handles=vad_legend, fontsize=8, loc="upper right")
 
     # =========================================================================
@@ -421,6 +426,8 @@ def plot(events: list[dict], title: str, save_path: str | None = None) -> None:
     BOT_SPAN_YMIN = 0.05
     BOT_SPAN_YMAX = 0.75  # leave headroom for TTS line
     BOT_TEXT_Y = 0.5   # data coords — centre of the bar
+    # Centre of the bot-speaking axvspan band in data coordinates
+    BOT_SPAN_CENTER_Y = BOT_Y_BOTTOM + (BOT_SPAN_YMIN + BOT_SPAN_YMAX) / 2 * (BOT_Y_TOP - BOT_Y_BOTTOM)
 
     # ylim set after tight_layout (see end of function)
 
@@ -441,6 +448,14 @@ def plot(events: list[dict], title: str, save_path: str | None = None) -> None:
     for start, end in bot_spans:
         ax_bot.axvspan(start, end, ymin=BOT_SPAN_YMIN, ymax=BOT_SPAN_YMAX,
                        color="#4dd0e1", alpha=0.55, zorder=2)
+
+    # Interruption events — red crosses centred on the TTS span line
+    if interruption_times:
+        ax_bot.plot(
+            interruption_times, [TTS_LINE_Y] * len(interruption_times),
+            marker="x", color="red", linestyle="none",
+            markersize=9, markeredgewidth=2.0, zorder=6,
+        )
 
     # TTS spans — thick colored lines above the bot-speaking fill
     for i, bar in enumerate(tts_bars):
@@ -474,6 +489,11 @@ def plot(events: list[dict], title: str, save_path: str | None = None) -> None:
         mlines.Line2D([], [], color="#e65100", linewidth=1.5, linestyle="--", label="LLM stop"),
         mpatches.Patch(color="#4dd0e1", alpha=0.65, label="bot speaking"),
     ]
+    if interruption_times:
+        bot_legend.append(
+            mlines.Line2D([], [], marker="x", color="red", linestyle="none",
+                          markersize=7, markeredgewidth=2.0, label="interruption")
+        )
     if tts_bars:
         bot_legend.append(mpatches.Patch(color="#888888", alpha=0.75, label="tts span"))
     if any(b["first_audio_s"] is not None for b in tts_bars):
@@ -506,10 +526,6 @@ def plot(events: list[dict], title: str, save_path: str | None = None) -> None:
         x_min, x_max = ax_vad.get_xlim()
         px_per_data = ax_px / (x_max - x_min)
         char_px = _char_px(8)
-        for t, start, end, orig_text, wrap_dur in text_objects:
-            span_px = wrap_dur * px_per_data
-            chars_per_line = max(8, int(3 * span_px / char_px))
-            t.set_text(textwrap.fill(orig_text, width=chars_per_line))
         for t, start, end, orig_text, wrap_dur in bot_text_objects:
             span_px = wrap_dur * px_per_data
             chars_per_line = max(8, int(1 * span_px / char_px))
