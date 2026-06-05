@@ -216,3 +216,6 @@ __marimo__/
 .streamlit/secrets.toml
 
 # Node.js (client/)
+
+# Session logs
+server/logs/
